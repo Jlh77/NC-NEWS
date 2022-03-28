@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const controller = require("./controllers/api.controller");
+const errorHandlers = require("./errorHandlers");
 
 app.use(express.json());
 
