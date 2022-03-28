@@ -6,7 +6,9 @@ const errorHandlers = require("./errorHandlers");
 app.use(express.json());
 
 app.get("/api/topics", controller.getTopics);
-app.get("/api/articles/:article_id", controller.getArticlesById);
+app.get("/api/articles/:article_id", controller.getArticleById);
+
+app.patch("/api/articles/:article_id", controller.patchArticleById);
 
 // Error Handlers
 
