@@ -40,22 +40,22 @@ describe("GET /api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then(({ body }) => {
-        expect(article).toMatchObject({
+        expect(body.article).toMatchObject({
           title: "Living in the shadow of a great man",
           topic: "mitch",
           author: "butter_bridge",
           body: "I find this existence challenging",
-          created_at: 1594329060000,
+          created_at: "2020-07-09T20:11:00.000Z",
           votes: 100,
         });
       });
   });
   test("returns 404 for non-existent article", () => {
     return request(app)
-      .get("/api/articles/99999999999999999")
+      .get("/api/articles/999999")
       .expect(404)
       .then(({ body }) => {
-        expect(msg).toBe("Not Found");
+        expect(body.msg).toBe("Not Found");
       });
   });
   test("returns 400 for bad request (non-numeric id passed)", () => {
@@ -63,7 +63,7 @@ describe("GET /api/articles/:article_id", () => {
       .get("/api/articles/not-a-valid-id")
       .expect(400)
       .then(({ body }) => {
-        expect(msg).toBe("Bad Request");
+        expect(body.msg).toBe("Bad Request");
       });
   });
 });
