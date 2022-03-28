@@ -12,7 +12,7 @@ exports.getTopics = (req, res, next) => {
 exports.getArticlesById = (req, res, next) => {
   const { article_id } = req.params;
   return model
-    .getArticlesById(article_id)
+    .selectArticleById(article_id)
     .then((article) => {
       res.status(200).send({ article });
     })
