@@ -7,6 +7,7 @@ const app = require("../app.js");
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
+
 describe("general 404 error handling", () => {
   test("404 - successful error handling", async () => {
     const { body } = await request(app)
