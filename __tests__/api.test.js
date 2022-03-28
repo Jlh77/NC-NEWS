@@ -15,9 +15,9 @@ describe("general 404 error handling", () => {
   test("404 - successful error handling", () => {
     return request(app)
       .get("/this-url-does-not-exist-404")
-      .expect(400)
-      .then((res) => {
-        expect(res.msg).toBe("not found");
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
       });
   });
 });
@@ -27,9 +27,10 @@ describe("GET /api/topics", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
-      .then((res) => {
-        expect(res.topic.length > 0).toBe(true);
-        res.topics.forEach((topic) => {
+      .then(({ body }) => {
+        console.log(body);
+        expect(body.topics.length > 0).toBe(true);
+        body.topics.forEach((topic) => {
           expect(topic).toMatchObject({
             slug: expect.any(String),
             description: expect.any(String),
