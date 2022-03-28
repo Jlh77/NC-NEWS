@@ -1,8 +1,8 @@
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
-const supertest = require("supertest");
-const app = requrie("../app.js");
+const request = require("supertest");
+const app = require("../app.js");
 
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
