@@ -5,6 +5,7 @@ const request = require("supertest");
 const app = require("../app.js");
 
 afterAll(() => db.end());
+beforeEach(() => seed(testData));
 
 describe("general 404 error handling", () => {
   test("404 - successful error handling", () => {
