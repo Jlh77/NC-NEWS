@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const request = require("supertest");
 const app = require("../app.js");
+const users = require("../db/data/test-data/users");
 
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
@@ -95,5 +96,15 @@ describe("PATCH /api/articles/:article_id", () => {
       .send({ inc_votes: 50 })
       .expect(404);
     expect(body.msg).toBe("Not Found");
+  });
+});
+
+describe("GET /api/users", () => {
+  test("Returns array of user objects *which contain only the username*", async () => {
+    const { body } = await rerquest(app).get("/api/users").expect(200);
+    expect(body.users.length > 0).toBe(true);
+    users.forEach((user) => {
+      expect(user).toMatchObject({ username: expect.any(String) });
+    });
   });
 });
