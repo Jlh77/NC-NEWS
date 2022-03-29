@@ -6,7 +6,8 @@ exports.selectAllTopics = async () => {
 };
 
 exports.selectArticleById = async (article_id) => {
-  const query = "SELECT * FROM articles WHERE article_id = $1;";
+  const query =
+    "SELECT articles.*, SUM(comments.article_id)::INT AS comment_count FROM articles INNER JOIN comments ON articles.article_id = comments.article_id WHERE articles.article_id = $1 GROUP BY articles.article_id;";
   const res = await db.query(query, [article_id]);
   if (res.rows.length === 0) {
     return Promise.reject({ status: 404, msg: "Not Found" });
