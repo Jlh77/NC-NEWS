@@ -32,6 +32,22 @@ exports.selectArticleCommentsById = async (article_id) => {
   return res.rows;
 };
 
+exports.postArticleCommentById = async (username, body) => {
+  const query = `INSERT INTO comments (
+    votes,
+    created_at,
+    author,
+    body
+    ) VALUES (
+      0,
+      CURRENT_TIMESTAMP(),
+      $1,
+      $2
+    ) RETURNING *;`;
+  const res = await db.query(query, [username, body]);
+  return res.rows[0];
+};
+
 exports.selectAllTopics = async () => {
   const res = await db.query("SELECT * FROM topics");
   return res.rows;
