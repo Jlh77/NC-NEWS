@@ -101,7 +101,7 @@ describe("PATCH /api/articles/:article_id", () => {
 
 describe("GET /api/users", () => {
   test("Returns array of user objects *which contain only the username*", async () => {
-    const { body } = await rerquest(app).get("/api/users").expect(200);
+    const { body } = await request(app).get("/api/users").expect(200);
     expect(body.users.length > 0).toBe(true);
     users.forEach((user) => {
       expect(user).toMatchObject({ username: expect.any(String) });
