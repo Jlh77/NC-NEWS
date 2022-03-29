@@ -22,3 +22,8 @@ exports.updateArticleById = async (article_id, inc_votes) => {
   }
   return res.rows[0];
 };
+
+exports.selectAllUsers = async () => {
+  const res = await db.query("SELECT username FROM users;");
+  return res.rows;
+};

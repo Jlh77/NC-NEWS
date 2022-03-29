@@ -97,3 +97,13 @@ describe("PATCH /api/articles/:article_id", () => {
     expect(body.msg).toBe("Not Found");
   });
 });
+
+describe("GET /api/users", () => {
+  test("Returns array of user objects *which contain only the username*", async () => {
+    const { body } = await request(app).get("/api/users").expect(200);
+    expect(body.users.length > 0).toBe(true);
+    body.users.forEach((user) => {
+      expect(user).toMatchObject({ username: expect.any(String) });
+    });
+  });
+});
