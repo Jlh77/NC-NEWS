@@ -1,14 +1,17 @@
 const express = require("express");
 const app = express();
-const controller = require("./controllers/api.controller");
+const controller = require("./controllers/");
 const errorHandlers = require("./errorHandlers");
 
 app.use(express.json());
 
-app.get("/api/topics", controller.getTopics);
-app.get("/api/articles/:article_id", controller.getArticleById);
+app.get("/api/topics", controller.topics.getTopics);
 
-app.patch("/api/articles/:article_id", controller.patchArticleById);
+app.get("/api/articles/:article_id", controller.articles.getArticleById);
+
+app.patch("/api/articles/:article_id", controller.articles.patchArticleById);
+
+app.get("/api/users", controller.users.getUsers);
 
 // Error Handlers
 
