@@ -5,11 +5,11 @@ const errorHandlers = require("./errorHandlers");
 
 app.use(express.json());
 
-app.get("/api/topics", controller.topics.getTopics);
-
+app.get("/api/articles", controller.articles.getArticles);
 app.get("/api/articles/:article_id", controller.articles.getArticleById);
-
 app.patch("/api/articles/:article_id", controller.articles.patchArticleById);
+
+app.get("/api/topics", controller.topics.getTopics);
 
 app.get("/api/users", controller.users.getUsers);
 
