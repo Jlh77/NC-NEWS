@@ -3,7 +3,6 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const request = require("supertest");
 const app = require("../app.js");
-const { string } = require("pg-format");
 require("jest-sorted");
 
 afterAll(() => db.end());
