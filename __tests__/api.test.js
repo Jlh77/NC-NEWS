@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const request = require("supertest");
 const app = require("../app.js");
+require("jest-sorted");
 
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
@@ -17,7 +18,7 @@ describe("general 404 error handling", () => {
 });
 
 describe("GET /api/topics", () => {
-  test("returns and array of topic objects, containing slug and description properties", async () => {
+  test("returns an array of topic objects, containing slug and description properties", async () => {
     const { body } = await request(app).get("/api/topics").expect(200);
     expect(body.topics.length > 0).toBe(true);
     body.topics.forEach((topic) => {
@@ -26,6 +27,25 @@ describe("GET /api/topics", () => {
         description: expect.any(String),
       });
     });
+  });
+});
+
+describe("GET /api/articles", () => {
+  test("returns an array of article objects, containing specific properties, and this array is ordered by date (descending)", async () => {
+    const { body } = await request(app).get("/api/articles").expect(200);
+    expect(body.articles.length === 12).toBe(true);
+    body.articles.forEach((article) => {
+      expect(article).toMatchObject({
+        author: expect.any(String),
+        title: expect.any(String),
+        article_id: expect.any(Number),
+        topic: expect.any(String),
+        created_at: expect.any(String),
+        votes: expect.any(Number),
+        comment_count: expect.any(String),
+      });
+    });
+    expect(body.articles).toBeSortedBy("created_at", { descending: true });
   });
 });
 
@@ -39,7 +59,7 @@ describe("GET /api/articles/:article_id", () => {
       body: "I find this existence challenging",
       created_at: "2020-07-09T20:11:00.000Z",
       votes: 100,
-      comment_count: expect.any(Number),
+      comment_count: "11",
     });
   });
   test("returns 404 for non-existent article", async () => {
