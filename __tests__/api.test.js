@@ -3,7 +3,6 @@ const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const request = require("supertest");
 const app = require("../app.js");
-const { string } = require("pg-format");
 require("jest-sorted");
 
 afterAll(() => db.end());
@@ -136,6 +135,24 @@ describe("Articles", () => {
           author: expect.any(String),
           body: expect.any(String),
         });
+      });
+    });
+  });
+  describe("POST /api/articles/:article_id/comments", () => {
+    test("successfully posts comment and returns the posted comment", async () => {
+      const newComment = { username: "butter_bridge", body: "yes." };
+      const { body } = await request(app)
+        .post("/api/articles/1/comments")
+        .send(newComment)
+        .expect(200);
+      console.log(body.postedComment);
+      expect(body.postedComment).toMatchObject({
+        comment_id: expect.any(Number),
+        author: "butter_bridge",
+        body: "yes.",
+        votes: 0,
+        created_at: expect.any(String),
+        article_id: 1,
       });
     });
   });
