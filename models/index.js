@@ -1,10 +1,5 @@
 const db = require("../db/connection");
 
-exports.selectAllTopics = async () => {
-  const res = await db.query("SELECT * FROM topics");
-  return res.rows;
-};
-
 exports.selectAllArticles = async () => {
   const query =
     "SELECT articles.*, COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC;";
@@ -29,6 +24,17 @@ exports.updateArticleById = async (article_id, inc_votes) => {
     return Promise.reject({ status: 404, msg: "Not Found" });
   }
   return res.rows[0];
+};
+
+exports.selectArticleCommentsById = async (article_id) => {
+  const query = "SELECT * FROM comments WHERE article_id = $1";
+  const res = await db.query(query, [article_id]);
+  return res.rows;
+};
+
+exports.selectAllTopics = async () => {
+  const res = await db.query("SELECT * FROM topics");
+  return res.rows;
 };
 
 exports.selectAllUsers = async () => {

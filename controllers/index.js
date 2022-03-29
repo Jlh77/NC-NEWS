@@ -1,3 +1,3 @@
-exports.articles = require("./articles.controllers");
-exports.topics = require("./topics.controllers");
-exports.users = require("./users.controllers");
+exports.articles = require("./articles.controller");
+exports.topics = require("./topics.controller");
+exports.users = require("./users.controller");
