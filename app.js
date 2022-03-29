@@ -8,6 +8,10 @@ app.use(express.json());
 app.get("/api/articles", controller.articles.getArticles);
 app.get("/api/articles/:article_id", controller.articles.getArticleById);
 app.patch("/api/articles/:article_id", controller.articles.patchArticleById);
+app.get(
+  "/api/articles/:article_id/comments",
+  controller.articles.getArticleCommentsById
+);
 
 app.get("/api/topics", controller.topics.getTopics);
 
