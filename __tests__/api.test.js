@@ -155,6 +155,12 @@ describe("Comments", () => {
       body.comments.forEach((comment) => {
         expect(comment.comment_id).not.toBe(1);
       });
+      test("404 for comment_id not existing", async () => {
+        const { body } = await request(app)
+          .get("/api/comments/999999")
+          .expect(404);
+        expect(body.msg).toBe("Comment does not exist");
+      });
     });
   });
 });
