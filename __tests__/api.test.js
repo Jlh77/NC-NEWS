@@ -50,6 +50,19 @@ describe("Articles", () => {
       });
       expect(body.articles).toBeSortedBy("created_at", { descending: true });
     });
+    test("Can sort by asc or desc using various query topic parameters", async () => {
+      let res = await request(app)
+        .get("/api/articles?sort_by=author")
+        .expect(200);
+      expect(res.body.articles.length === 12).toBe(true);
+      expect(res.body.articles).toBeSortedBy("author", { descending: true });
+
+      res = await request(app)
+        .get("/api/articles?sort_by=title&order=ASC")
+        .expect(200);
+      expect(res.body.articles.length === 12).toBe(true);
+      expect(res.body.articles).toBeSortedBy("title", { descending: false });
+    });
   });
   describe("GET /api/articles/:article_id", () => {
     test("returns an article object with the below properties", async () => {
@@ -135,24 +148,6 @@ describe("Articles", () => {
           author: expect.any(String),
           body: expect.any(String),
         });
-      });
-    });
-  });
-  describe("POST /api/articles/:article_id/comments", () => {
-    test("successfully posts comment and returns the posted comment", async () => {
-      const newComment = { username: "butter_bridge", body: "yes." };
-      const { body } = await request(app)
-        .post("/api/articles/1/comments")
-        .send(newComment)
-        .expect(200);
-      console.log(body.postedComment);
-      expect(body.postedComment).toMatchObject({
-        comment_id: expect.any(Number),
-        author: "butter_bridge",
-        body: "yes.",
-        votes: 0,
-        created_at: expect.any(String),
-        article_id: 1,
       });
     });
   });
