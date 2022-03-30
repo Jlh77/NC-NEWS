@@ -12,6 +12,10 @@ app.get(
   "/api/articles/:article_id/comments",
   controller.articles.getArticleCommentsById
 );
+app.post(
+  "/api/articles/:article_id/comments",
+  controller.articles.postArticleCommentById
+);
 
 app.get("/api/topics", controller.topics.getTopics);
 

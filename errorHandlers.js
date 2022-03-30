@@ -8,7 +8,8 @@ exports.customError = (err, req, res, next) => {
 
 exports.psql = (err, req, res, next) => {
   // 22003 - integer out of range
-  let sqlErrs = ["22P02", "42703", "22003"];
+  // 23503 - foreign key violation
+  let sqlErrs = ["22P02", "42703", "22003", "23503"];
   if (sqlErrs.includes(err.code)) {
     res.status(400).send({ msg: "Bad Request" });
   } else {

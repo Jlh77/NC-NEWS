@@ -39,3 +39,16 @@ exports.getArticleCommentsById = async (req, res, next) => {
     next(err);
   }
 };
+exports.postArticleCommentById = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    const { username, body } = req.body;
+    const [postedComment] = await Promise.all([
+      model.insertArticleCommentById(article_id, username, body),
+      model.selectArticleById(article_id),
+    ]);
+    res.status(200).send({ postedComment });
+  } catch (err) {
+    next(err);
+  }
+};
