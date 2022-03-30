@@ -17,21 +17,6 @@ describe("general 404 error handling", () => {
   });
 });
 
-describe("Topics", () => {
-  describe("GET /api/topics", () => {
-    test("returns an array of topic objects, containing slug and description properties", async () => {
-      const { body } = await request(app).get("/api/topics").expect(200);
-      expect(body.topics.length > 0).toBe(true);
-      body.topics.forEach((topic) => {
-        expect(topic).toMatchObject({
-          slug: expect.any(String),
-          description: expect.any(String),
-        });
-      });
-    });
-  });
-});
-
 describe("Articles", () => {
   describe("GET /api/articles", () => {
     test("returns an array of article objects, containing specific properties, and this array is ordered by date (descending)", async () => {
@@ -156,6 +141,33 @@ describe("Articles", () => {
           created_at: expect.any(String),
           author: expect.any(String),
           body: expect.any(String),
+        });
+      });
+    });
+  });
+});
+
+describe("Comments", () => {
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("deletes the comment id correctly", async () => {
+      await request(app).get("/api/comments/1").expect(204);
+      const { body } = request(app).get("/api/articles/1/comments").expect(200);
+      body.comments.forEach((comment) => {
+        expect(comment.comment_id).not.toBe(1);
+      });
+    });
+  });
+});
+
+describe("Topics", () => {
+  describe("GET /api/topics", () => {
+    test("returns an array of topic objects, containing slug and description properties", async () => {
+      const { body } = await request(app).get("/api/topics").expect(200);
+      expect(body.topics.length > 0).toBe(true);
+      body.topics.forEach((topic) => {
+        expect(topic).toMatchObject({
+          slug: expect.any(String),
+          description: expect.any(String),
         });
       });
     });
