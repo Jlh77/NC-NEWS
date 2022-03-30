@@ -63,7 +63,14 @@ describe("Articles", () => {
       expect(res.body.articles.length === 12).toBe(true);
       expect(res.body.articles).toBeSortedBy("title", { descending: false });
     });
+    test("400 returned for a bad request (invalid sort_by query) ", async () => {
+      let res = await request(app)
+        .get("/api/articles?sort_by=invalid-column")
+        .expect(400);
+      expect(res.body.msg).toBe("Bad Request");
+    });
   });
+
   describe("GET /api/articles/:article_id", () => {
     test("returns an article object with the below properties", async () => {
       const { body } = await request(app).get("/api/articles/1").expect(200);
@@ -90,6 +97,7 @@ describe("Articles", () => {
       expect(body.msg).toBe("Bad Request");
     });
   });
+
   describe("PATCH /api/articles/:article_id", () => {
     test("returns updated object with the same id and votes incremented correctly", async () => {
       const { body } = await request(app)
@@ -134,6 +142,7 @@ describe("Articles", () => {
       expect(body.msg).toBe("Not Found");
     });
   });
+
   describe("GET /api/articles/:article_id/comments", () => {
     test("responds with appropriate array of comment objects", async () => {
       const { body } = await request(app)
