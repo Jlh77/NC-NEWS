@@ -150,17 +150,19 @@ describe("Articles", () => {
 describe("Comments", () => {
   describe("DELETE /api/comments/:comment_id", () => {
     test("deletes the comment id correctly", async () => {
-      await request(app).get("/api/comments/1").expect(204);
-      const { body } = request(app).get("/api/articles/1/comments").expect(200);
+      await request(app).delete("/api/comments/1").expect(204);
+      const { body } = await request(app)
+        .get("/api/articles/9/comments")
+        .expect(200);
       body.comments.forEach((comment) => {
         expect(comment.comment_id).not.toBe(1);
       });
-      test("404 for comment_id not existing", async () => {
-        const { body } = await request(app)
-          .get("/api/comments/999999")
-          .expect(404);
-        expect(body.msg).toBe("Comment does not exist");
-      });
+    });
+    test("404 for comment_id not existing", async () => {
+      const { body } = await request(app)
+        .delete("/api/comments/999999")
+        .expect(404);
+      expect(body.msg).toBe("Comment does not exist");
     });
   });
 });

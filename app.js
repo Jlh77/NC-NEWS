@@ -17,6 +17,8 @@ app.post(
   controller.articles.postArticleCommentById
 );
 
+app.delete("/api/comments/:comment_id", controller.comments.removeCommentById);
+
 app.get("/api/topics", controller.topics.getTopics);
 
 app.get("/api/users", controller.users.getUsers);

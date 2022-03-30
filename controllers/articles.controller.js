@@ -47,6 +47,7 @@ exports.getArticleCommentsById = async (req, res, next) => {
     next(err);
   }
 };
+
 exports.postArticleCommentById = async (req, res, next) => {
   try {
     const { article_id } = req.params;
