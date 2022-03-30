@@ -5,6 +5,9 @@ const errorHandlers = require("./errorHandlers");
 
 app.use(express.json());
 
+const endpoints = require("./endpoints.json");
+app.get("/api", (req, res) => res.json({ endpoints }));
+
 app.get("/api/articles", controller.articles.getArticles);
 app.get("/api/articles/:article_id", controller.articles.getArticleById);
 app.patch("/api/articles/:article_id", controller.articles.patchArticleById);
