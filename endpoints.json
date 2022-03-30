@@ -20,8 +20,65 @@
           "author": "weegembump",
           "body": "Text from the article..",
           "created_at": 1527695953341
+        },
+        {
+          "title": "Another article",
+          "topic": "shopping",
+          "author": "someone",
+          "body": "Text from the article..",
+          "created_at": 1527695973341
         }
       ]
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves an object of the specified article",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "body": "Text from the article..",
+          "created_at": 1527695953341
+      }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array of comments on the specified article",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 1,
+          "votes": 0,
+          "created_at": 1527695953341,
+          "author": "someone",
+          "body": "Text from the article.."
+        }
+      ]
+    }
+  },
+  "GET /api/comments/:comment_id": {
+    "description": "serves an object of the specified comment",
+    "queries": [],
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 1,
+        "votes": 0,
+        "created_at": 1527695953341,
+        "author": "someone",
+        "body": "Text from the article.."
+      }
+    }
+  },
+  "GET /api/users": {
+    "description": "serves an array of all the users",
+    "queries": [],
+    "exampleResponse": {
+      "users": {
+        "username": "user1"
+      }
     }
   }
 }
