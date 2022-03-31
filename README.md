@@ -2,7 +2,7 @@
 
 ## Environment Variables
 
-Required:
+Required :
 
 1.  Set up test/development database
 2.  Set up environment variables to point to your databases
