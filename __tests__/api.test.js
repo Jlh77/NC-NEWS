@@ -17,6 +17,14 @@ describe("general 404 error handling", () => {
   });
 });
 
+describe("All /api endpoints", () => {
+  test("GET /api returns endpoints.json", async () => {
+    const { body } = await request(app).get("/api").expect(200);
+    const endpoints = require("../endpoints.json");
+    expect(body.endpoints).toEqual(endpoints);
+  });
+});
+
 describe("Articles", () => {
   describe("GET /api/articles", () => {
     test("returns an array of article objects, containing specific properties, and this array is ordered by date (descending)", async () => {
