@@ -19,6 +19,7 @@ To clone this project for yourself, you will need to:
 2.  Make sure to install dependencies for the project:
 
     ```
+
     $ npm install
     ```
 
@@ -26,15 +27,15 @@ To clone this project for yourself, you will need to:
 
     .env.development --->
 
-        ```
-        PGDATABASE=nc_news
-        ```
+    ```
+    PGDATABASE=nc_news
+    ```
 
     .env.test --->
 
-        ```
-        PGDATABASE=nc_news_test
-        ```
+    ```
+    PGDATABASE=nc_news_test
+    ```
 
 4.  Seed your local database - First, make sure you are running Postgresql on your machine. Then simply run the following command which will seed the database:
 
@@ -60,8 +61,8 @@ To clone this project for yourself, you will need to:
 
     You can also run
 
-        ```
-        $ node app.listen.js
-        ```
+    ```
+    $ node app.listen.js
+    ```
 
     to start a server and make request to you localhost, which will run in development mode.
