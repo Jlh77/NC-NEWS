@@ -241,4 +241,23 @@ describe("Users", () => {
       });
     });
   });
+  describe("GET /api/users/:username", () => {
+    test("Returns user object", async () => {
+      const { body } = await request(app)
+        .get("/api/users/rogersop")
+        .expect(200);
+      expect(body.user).toMatchObject({
+        username: "rogersop",
+        avatar_url:
+          "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+        name: "paul",
+      });
+    });
+    test("404 for not found", async () => {
+      const { body } = await request(app)
+        .get("/api/users/non-existent")
+        .expect(404);
+      expect(body.msg).toBe("Not Found");
+    });
+  });
 });
