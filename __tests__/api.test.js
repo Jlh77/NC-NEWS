@@ -153,6 +153,47 @@ describe("Articles", () => {
       });
     });
   });
+
+  describe("POST /api/articles/:article_id/comments", () => {
+    test("posts comment and returns new comment", async () => {
+      const newComment = {
+        username: "butter_bridge",
+        body: "this is a comment",
+      };
+      const { body } = await request(app)
+        .post("/api/articles/1/comments")
+        .send(newComment)
+        .expect(200);
+      expect(body.postedComment).toMatchObject({
+        comment_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String),
+        author: newComment.username,
+        body: newComment.body,
+      });
+    });
+    test("404 for invalid user", async () => {
+      const newComment = {
+        username: "this user dont exist",
+        body: "this is a comment",
+      };
+      const { body } = await request(app)
+        .post("/api/articles/1/comments")
+        .send(newComment)
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+    test("404 for no body", async () => {
+      const newComment = {
+        username: "this user dont exist",
+      };
+      const { body } = await request(app)
+        .post("/api/articles/1/comments")
+        .send(newComment)
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+  });
 });
 
 describe("Comments", () => {
