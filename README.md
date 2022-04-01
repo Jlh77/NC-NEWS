@@ -19,7 +19,6 @@ To clone this project for yourself, you will need to:
 2.  Make sure to install dependencies for the project:
 
     ```
-
     $ npm install
     ```
 
