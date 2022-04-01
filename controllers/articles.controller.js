@@ -60,7 +60,6 @@ exports.postArticleCommentById = async (req, res, next) => {
 
     res.status(200).send({ postedComment });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
