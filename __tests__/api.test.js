@@ -64,6 +64,63 @@ describe("Articles", () => {
     });
   });
 
+  describe("POST /api/articles", () => {
+    test("returns posted article object", async () => {
+      const { body } = await request(app)
+        .post("/api/articles")
+        .send({
+          newArticle: {
+            author: "butter_bridge",
+            title: "tis a title",
+            body: "tis some stuff",
+            topic: "paper",
+          },
+        })
+        .expect(200);
+      expect(body.insertedArticle).toMatchObject({
+        author: "butter_bridge",
+        title: "tis a title",
+        body: "tis some stuff",
+        topic: "paper",
+        article_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String),
+      });
+      const newArticleId = body.insertedArticle.article_id;
+      const res = await request(app)
+        .get(`/api/articles/${newArticleId}`)
+        .expect(200);
+      expect(res.body.article).toMatchObject({
+        author: "butter_bridge",
+        title: "tis a title",
+        body: "tis some stuff",
+        topic: "paper",
+        article_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String),
+        comment_count: "0",
+      });
+    });
+
+    test("400 for bad errors", async () => {
+      let res = await request(app)
+        .post("/api/articles")
+        .send({
+          newArticle: {
+            //author: "butter_bridge",
+            //title: "tis a title",
+            //body: "tis some stuff",
+            //topic: "paper",
+          },
+        })
+        .expect(400);
+      expect(res.body.msg).toBe("Bad Request");
+
+      res = await request(app).post("/api/articles").send({}).expect(400);
+      expect(res.body.msg).toBe("Bad Request");
+    });
+  });
+
   describe("GET /api/articles/:article_id", () => {
     test("returns an article object with the below properties", async () => {
       const { body } = await request(app).get("/api/articles/1").expect(200);

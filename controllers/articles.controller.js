@@ -14,6 +14,19 @@ exports.getArticles = async (req, res, next) => {
   }
 };
 
+exports.postArticle = async (req, res, next) => {
+  try {
+    const { newArticle } = req.body;
+    if (!newArticle) {
+      return res.status(400).send({ status: 400, msg: "Bad Request" });
+    }
+    const insertedArticle = await articlesModel.insertArticle(newArticle);
+    res.status(200).send({ insertedArticle });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.getArticleById = async (req, res, next) => {
   try {
     const { article_id } = req.params;

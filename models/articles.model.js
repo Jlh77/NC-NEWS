@@ -20,6 +20,13 @@ exports.selectAllArticles = async (
   return res.rows;
 };
 
+exports.insertArticle = async ({ author, title, body, topic }) => {
+  const query =
+    "INSERT INTO articles (author, title, body, topic) VALUES ($1, $2, $3, $4) RETURNING *;";
+  const res = await db.query(query, [author, title, body, topic]);
+  return res.rows[0];
+};
+
 exports.selectArticleById = async (article_id) => {
   const query =
     "SELECT articles.*, COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id WHERE articles.article_id = $1 GROUP BY articles.article_id;";

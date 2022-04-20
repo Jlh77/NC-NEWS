@@ -1,7 +1,10 @@
 const controller = require("../controllers/");
 const articlesRouter = require("express").Router();
 
-articlesRouter.get("/", controller.articles.getArticles);
+articlesRouter
+  .route("/")
+  .get(controller.articles.getArticles)
+  .post(controller.articles.postArticle);
 
 articlesRouter
   .route("/:article_id")
