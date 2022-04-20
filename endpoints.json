@@ -31,16 +31,37 @@
       ]
     }
   },
+  "POST /api/articles": {
+    "description": "post an article",
+    "queries": [],
+    "exampleRequestBody": {
+      "title": "new title",
+      "topic": "cooking",
+      "author": "weegembump",
+      "body": "Text from the article.."
+    },
+    "exampleResponse": {
+      "insertedArticle": {
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "body": "Text from the article..",
+        "created_at": 1527695953341,
+        "votes": 0,
+        "article_id": 2
+      }
+    }
+  },
   "GET /api/articles/:article_id": {
     "description": "serves an object of the specified article",
     "queries": [],
     "exampleResponse": {
       "article": {
-          "title": "Seafood substitutions are increasing",
-          "topic": "cooking",
-          "author": "weegembump",
-          "body": "Text from the article..",
-          "created_at": 1527695953341
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "body": "Text from the article..",
+        "created_at": 1527695953341
       }
     }
   },
@@ -52,12 +73,12 @@
     },
     "exampleResponse": {
       "article": {
-          "title": "Seafood substitutions are increasing",
-          "topic": "cooking",
-          "author": "weegembump",
-          "body": "Text from the article..",
-          "votes": 51,
-          "created_at": 1527695953341
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "body": "Text from the article..",
+        "votes": 51,
+        "created_at": 1527695953341
       }
     }
   },
@@ -135,7 +156,7 @@
     "exampleResponse": {
       "users": [
         {
-        "username": "user1"
+          "username": "user1"
         }
       ]
     }
@@ -144,13 +165,11 @@
     "description": "serves an object of specified user",
     "queries": [],
     "exampleResponse": {
-      "user": 
-      {
-        "username": "user1", 
+      "user": {
+        "username": "user1",
         "avatar_url": "url",
         "name": "Jeff"
       }
     }
   }
-
 }
