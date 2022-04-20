@@ -214,6 +214,36 @@ describe("Comments", () => {
       expect(body.msg).toBe("Comment does not exist");
     });
   });
+  describe("PATCH /api/comments/:comment_id", () => {
+    test("Increases vote by count, positively (comment_id of 17 has 20 votes default)", async () => {
+      const { body } = await request(app)
+        .patch("/api/comments/17")
+        .send({ inc_votes: 1 })
+        .expect(200);
+      expect(body.updatedComment.votes).toBe(21);
+    });
+    test("Decreases vote by count (comment_id of 17 has 20 votes default)", async () => {
+      const { body } = await request(app)
+        .patch("/api/comments/17")
+        .send({ inc_votes: -1 })
+        .expect(200);
+      expect(body.updatedComment.votes).toBe(19);
+    });
+    test("404 on non-existent comment", async () => {
+      const { body } = await request(app)
+        .patch("/api/comments/999999")
+        .send({ inc_votes: -1 })
+        .expect(404);
+      expect(body.msg).toBe("Comment does not exist");
+    });
+    test("400 on bad comment_id", async () => {
+      const { body } = await request(app)
+        .patch("/api/comments/notvalid")
+        .send({ inc_votes: -1 })
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+  });
 });
 
 describe("Topics", () => {

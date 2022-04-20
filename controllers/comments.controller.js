@@ -13,7 +13,9 @@ exports.removeCommentById = async (req, res, next) => {
 exports.patchIncCommentVotesById = async (req, res, next) => {
   try {
     const { comment_id } = req.params;
+    const { inc_votes } = req.body;
     const updatedComment = await commentsModel.updateIncCommentVotesById(
+      inc_votes,
       comment_id
     );
     res.status(200).send({ updatedComment });
