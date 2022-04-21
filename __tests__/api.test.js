@@ -211,11 +211,26 @@ describe("Articles", () => {
   });
 
   describe("GET /api/articles/:article_id/comments", () => {
-    test("responds with appropriate array of comment objects", async () => {
+    test("responds with appropriate array of comment objects (also default pagination limit to 10)", async () => {
       const { body } = await request(app)
         .get("/api/articles/1/comments")
         .expect(200);
-      expect(body.comments.length).toBe(11);
+      expect(body.comments.length).toBe(10);
+      body.comments.forEach((comment) => {
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+        });
+      });
+    });
+    test("pagination - limit works ", async () => {
+      const { body } = await request(app)
+        .get("/api/articles/1/comments?limit=5")
+        .expect(200);
+      expect(body.comments.length).toBe(5);
       body.comments.forEach((comment) => {
         expect(comment).toMatchObject({
           comment_id: expect.any(Number),
