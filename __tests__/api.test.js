@@ -56,6 +56,23 @@ describe("Articles", () => {
       expect(res.body.articles.length === 12).toBe(true);
       expect(res.body.articles).toBeSortedBy("title", { descending: false });
     });
+    test("pagination - default is 12 long", async () => {
+      let res = await request(app)
+        .get("/api/articles?sort_by=article_id")
+        .expect(200);
+      expect(res.body.articles.length === 12).toBe(true);
+    });
+    test("pagination - limit 5, page 1 gives articles 1-5 page 2 gives 6-10 etc", async () => {
+      let res = await request(app)
+        .get("/api/articles?sort_by=article_id&limit=5&page=1&order=ASC")
+        .expect(200);
+      expect(res.body.articles.length === 5).toBe(true);
+      expect(res.body.articles).toBeSortedBy("article_id", {
+        descending: false,
+      });
+      expect(res.body.articles[0].article_id === 1).toBe(true);
+      expect(res.body.articles[4].article_id === 5).toBe(true);
+    });
     test("400 returned for a bad request (invalid sort_by query) ", async () => {
       let res = await request(app)
         .get("/api/articles?sort_by=invalid-column")
