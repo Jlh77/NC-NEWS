@@ -4,8 +4,13 @@ const format = require("pg-format");
 exports.selectAllArticles = async (
   topic = "%%",
   sort_by = "created_at",
-  order = "DESC"
+  order = "DESC",
+  limit = "12",
+  page = "1"
 ) => {
+  let vals = [];
+  let i = 0;
+
   let query = format(
     `SELECT articles.*, COUNT(comments.article_id) AS comment_count FROM articles 
     LEFT JOIN comments ON articles.article_id = comments.article_id 
@@ -15,8 +20,11 @@ exports.selectAllArticles = async (
     topic,
     sort_by
   );
-  query += order === "DESC" ? " DESC;" : " ASC;";
-  const res = await db.query(query);
+  query += order === "ASC" ? " ASC" : " DESC";
+  vals.push(limit);
+  vals.push((page - 1) * limit);
+  query += ` LIMIT $${++i} OFFSET $${++i};`;
+  const res = await db.query(query, vals);
   return res.rows;
 };
 

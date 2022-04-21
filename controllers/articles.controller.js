@@ -1,12 +1,14 @@
 const { articlesModel } = require("../models");
 
 exports.getArticles = async (req, res, next) => {
-  const { topic, sort_by, order } = req.query;
+  const { topic, sort_by, order, limit, page } = req.query;
   try {
     const articles = await articlesModel.selectAllArticles(
       topic,
       sort_by,
-      order
+      order,
+      limit,
+      page
     );
     res.status(200).send({ articles });
   } catch (err) {
