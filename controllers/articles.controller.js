@@ -53,6 +53,16 @@ exports.patchArticleById = async (req, res, next) => {
   }
 };
 
+exports.removeArticleById = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    await articlesModel.deleteArticleById(article_id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.getArticleCommentsById = async (req, res, next) => {
   try {
     const { article_id } = req.params;

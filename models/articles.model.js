@@ -54,6 +54,20 @@ exports.updateArticleById = async (article_id, inc_votes) => {
   return res.rows[0];
 };
 
+exports.deleteArticleById = async (article_id) => {
+  const res = await db.query(
+    "DELETE FROM articles WHERE article_id = $1 RETURNING *;",
+    [article_id]
+  );
+  if (res.rows.length === 0) {
+    return Promise.reject({
+      status: 404,
+      msg: "Not Found, maybe this comment was already deleted?",
+    });
+  }
+  return;
+};
+
 exports.selectArticleCommentsById = async (
   article_id,
   limit = "10",
