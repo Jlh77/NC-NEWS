@@ -347,6 +347,18 @@ describe("Topics", () => {
         });
       });
     });
+    test("post topic", async () => {
+      const newTopic = { slug: "yes", description: "this" };
+      const { body } = await request(app)
+        .post("/api/topics")
+        .send(newTopic)
+        .expect(200);
+      expect(body.newTopic).toMatchObject(newTopic);
+    });
+    test("no topic no worky", async () => {
+      const { body } = await request(app).post("/api/topics").expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
   });
 });
 
