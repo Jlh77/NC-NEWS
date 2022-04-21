@@ -138,6 +138,22 @@ describe("Articles", () => {
     });
   });
 
+  describe("DELETE /api/articles", () => {
+    test("delete article by id", async () => {
+      await request(app).delete("/api/articles/2").expect(204);
+      const res = await request(app).get("/api/articles/2").expect(404);
+      expect(res.body.msg).toBe("Not Found");
+    });
+    test("404 to delete non-existent article", async () => {
+      const { body } = await request(app)
+        .delete("/api/articles/99999999")
+        .expect(404);
+      expect(body.msg).toBe(
+        "Not Found, maybe this comment was already deleted?"
+      );
+    });
+  });
+
   describe("GET /api/articles/:article_id", () => {
     test("returns an article object with the below properties", async () => {
       const { body } = await request(app).get("/api/articles/1").expect(200);
