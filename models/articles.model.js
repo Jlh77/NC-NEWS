@@ -54,9 +54,18 @@ exports.updateArticleById = async (article_id, inc_votes) => {
   return res.rows[0];
 };
 
-exports.selectArticleCommentsById = async (article_id) => {
-  const query = "SELECT * FROM comments WHERE article_id = $1";
-  const res = await db.query(query, [article_id]);
+exports.selectArticleCommentsById = async (
+  article_id,
+  limit = "10",
+  page = "1"
+) => {
+  let query = "SELECT * FROM comments WHERE article_id = $1";
+  const vals = [];
+  let i = 1;
+  vals.push(limit);
+  vals.push((page - 1) * limit);
+  query += ` LIMIT $${++i} OFFSET $${++i};`;
+  const res = await db.query(query, [article_id, ...vals]);
   return res.rows;
 };
 
