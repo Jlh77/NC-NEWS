@@ -124,15 +124,13 @@
       "body": "this is a comment"
     },
     "exampleResponse": {
-      "comments": [
-        {
-          "comment_id": 100,
-          "votes": 0,
-          "created_at": 1527695953341,
-          "author": "butter_bridge",
-          "body": "this is a comment"
-        }
-      ]
+      "postedComment": {
+        "comment_id": 100,
+        "votes": 0,
+        "created_at": 1527695953341,
+        "author": "butter_bridge",
+        "body": "this is a comment"
+      }
     }
   },
   "GET /api/comments/:comment_id": {
