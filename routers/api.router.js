@@ -8,6 +8,9 @@ apiRouter.get("/", (req, res) => res.json({ endpoints }));
 const articlesRouter = require("./articles.router");
 apiRouter.use("/articles", articlesRouter);
 
+const authRouter = require("./auth.router");
+apiRouter.use("/auth", authRouter);
+
 const commentsRouter = require("./comments.router");
 apiRouter.use("/comments", commentsRouter);
 
