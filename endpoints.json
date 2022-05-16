@@ -7,7 +7,10 @@
     "queries": [],
 
     "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
+      "topics": [
+        { "slug": "football", "description": "Footie!" },
+        { "slug": "smth else", "description": "This!" }
+      ]
     }
   },
   "POST /api/topics": {
