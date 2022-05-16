@@ -22,15 +22,9 @@ passport.serializeUser((user, done) => {
 });
 
 // Used to deserialize the user
-passport.deserializeUser((id, done) => {
-  db.query("SELECT * FROM users WHERE user_id = $1")
-    .then(
-      (rows) => {
-        done(null, rows[0]);
-      },
-      [id]
-    )
-    .catch((err) => {
-      done(err, null);
-    });
+passport.deserializeUser(async (id, done) => {
+  const { rows } = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+    id,
+  ]);
+  done(err, rows[0]);
 });
