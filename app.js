@@ -3,6 +3,7 @@ const app = express();
 const errorHandlers = require("./errorHandlers");
 const cors = require("cors");
 
+// cors should specify one place
 app.use(cors());
 app.use(express.json());
 

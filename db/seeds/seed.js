@@ -20,7 +20,7 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
     .then((result) => result.rows);
 
   const insertUsersQueryStr = format(
-    "INSERT INTO users ( username, name, avatar_url, email) VALUES %L RETURNING *;",
+    "INSERT INTO users (username, name, avatar_url, email) VALUES %L RETURNING *;",
     userData.map(({ username, name, avatar_url, email }) => [
       username,
       name,
