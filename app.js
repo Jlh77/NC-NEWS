@@ -3,9 +3,42 @@ const app = express();
 const errorHandlers = require("./errorHandlers");
 const cors = require("cors");
 
-// cors should specify one place
+// Cors should specify one place
 app.use(cors());
 app.use(express.json());
+
+// Passport authentication
+
+const passport = require("passport");
+const db = require("./db/connection");
+const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
+
+app.use(
+  session({
+    name: "SSSID",
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: false,
+    store: new pgSession({
+      pool: db,
+      tableName: "user_sessions",
+    }),
+    proxy: true,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      maxAge: 5184000000, //1000 * 60 * 60 * 24 * 60 (Lasts 60 days)
+    },
+  })
+);
+
+require("./config/passport");
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Add routes
 
 const apiRouter = require("./routers/api.router");
 app.use("/api", apiRouter);

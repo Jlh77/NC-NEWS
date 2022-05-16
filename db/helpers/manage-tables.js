@@ -29,20 +29,27 @@ const createTables = async () => {
     facebook_email VARCHAR,
     joined TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-  );${updatedAtTrigger("users")}`);
+    );${updatedAtTrigger("users")}`);
 
   await Promise.all([topicsTablePromise, usersTablePromise]);
 
   await db.query(`
-  CREATE TABLE user_reset_tokens (
-    reset_token_id SERIAL PRIMARY KEY,
-    email VARCHAR NOT NULL,
-    token VARCHAR NOT NULL,
-    expiration TIMESTAMP NOT NULL,
-    used BOOL NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-  );${updatedAtTrigger("user_reset_tokens")}`);
+    CREATE TABLE user_reset_tokens (
+      reset_token_id SERIAL PRIMARY KEY,
+      email VARCHAR NOT NULL,
+      token VARCHAR NOT NULL,
+      expiration TIMESTAMP NOT NULL,
+      used BOOL NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );${updatedAtTrigger("user_reset_tokens")}`);
+
+  await db.query(`
+  CREATE TABLE user_sessions (
+    sid VARCHAR PRIMARY KEY NOT NULL,
+    sess json NOT NULL,
+    expire timestamp(6) without time zone NOT NULL
+  );`);
 
   await db.query(`
   CREATE TABLE articles (
@@ -73,6 +80,7 @@ const dropTables = async () => {
   await db.query(`DROP TABLE IF EXISTS articles;`);
   await db.query(`DROP TABLE IF EXISTS users;`);
   await db.query(`DROP TABLE IF EXISTS user_reset_tokens;`);
+  await db.query(`DROP TABLE IF EXISTS user_sessions;`);
   await db.query(`DROP TABLE IF EXISTS topics;`);
 };
 
