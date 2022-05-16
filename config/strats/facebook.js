@@ -20,35 +20,35 @@ passport.use(
     async (req, accessToken, refreshToken, profile, done) => {
       // If user is logged in, proceed to simply link account
       if (req.user) {
-        req.user.facebook_id = profile.id;
-        req.user.facebook_email = profile.email;
+        try {
+          req.user.facebook_id = profile.id;
+          req.user.facebook_email = profile.email;
 
-        db.query(
-          "UPDATE users SET facebook_id = $1, facebook_email = $2 WHERE user_id = $3;",
-          [req.user.facebook_id, req.user.facebook_email, req.user.id]
-        )
-          .then((rows) => {
-            // No error (fb account not already in use) link and return updated user
-            return done(null, req.user);
-          })
-          .catch((err) => {
-            // If facebook account is duplicate (linked to different account) will return error
-            return done(null, false, {
-              success: false,
-              message:
-                "The Facebook account you tried to link is already associated with another account.",
-            }); //IMPORTANT Error flash not working, fix
-          });
+          const { rows } = await db.query(
+            "UPDATE users SET facebook_id = $1, facebook_email = $2 WHERE user_id = $3;",
+            [req.user.facebook_id, req.user.facebook_email, req.user.id]
+          );
+          // No error (fb account not already in use) link and return updated user
+          return done(null, req.user);
+        } catch (err) {
+          // If facebook account is duplicate (linked to different account) will return error
+          return done(null, false, {
+            success: false,
+            message:
+              "The Facebook account you tried to link is already associated with another account.",
+          }); //IMPORTANT Error flash not working, fix
+        }
       }
 
       // If not logged in
       else {
         try {
           // Check if facebook account is registered
-          let rows = await db.query(
+          let res = await db.query(
             "SELECT * FROM users WHERE facebook_id = $1;",
             [profile.id]
           );
+          let rows = res.rows;
 
           // If user already registered, log in
           if (rows.length) {
@@ -56,9 +56,10 @@ passport.use(
           }
 
           // Check if email in use before inserting, if so link and login
-          rows = await db.query("SELECT * FROM users WHERE email = $1;", [
+          res = await db.query("SELECT * FROM users WHERE email = $1;", [
             profile.email,
           ]);
+          rows = res.rows;
 
           if (rows.length) {
             const existingUser = rows[0];
@@ -91,7 +92,7 @@ passport.use(
               avatar_url: profile.picture,
             };
 
-            db.query(
+            const { rows } = await db.query(
               "INSERT INTO users (email, facebook_id, original_method, name, facebook_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
               [
                 newUser.email,
@@ -101,9 +102,8 @@ passport.use(
                 newUser.facebook_email,
                 newUser.avatar_url,
               ]
-            ).then((rows) => {
-              return done(null, rows[0]);
-            });
+            );
+            return done(null, rows[0]);
           }
         } catch (err) {
           return done(err);
