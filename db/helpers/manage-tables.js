@@ -42,14 +42,7 @@ const createTables = async () => {
       used BOOL NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-      );${updatedAtTrigger("user_reset_tokens")}`);
-
-  await db.query(`
-  CREATE TABLE user_sessions (
-    sid VARCHAR PRIMARY KEY NOT NULL,
-    sess json NOT NULL,
-    expire timestamp(6) without time zone NOT NULL
-  );`);
+    );${updatedAtTrigger("user_reset_tokens")}`);
 
   await db.query(`
   CREATE TABLE articles (

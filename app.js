@@ -16,13 +16,14 @@ const pgSession = require("connect-pg-simple")(session);
 
 app.use(
   session({
-    name: "SSSID",
+    name: "SSID",
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
     store: new pgSession({
       pool: db,
       tableName: "user_sessions",
+      createTableIfMissing: true,
     }),
     proxy: true,
     cookie: {
