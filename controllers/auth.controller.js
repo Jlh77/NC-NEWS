@@ -1,5 +1,5 @@
-const db = require("../db/connection");
 const { authModel } = require("../models");
+
 const passport = require("passport");
 
 exports.login = async (req, res, next) => {

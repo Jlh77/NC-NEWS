@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const errorHandlers = require("./errorHandlers");
 const cors = require("cors");
+const flash = require("express-flash");
 
 // Cors should specify one place
 app.use(cors());
 app.use(express.json());
+app.use(flash());
 
 // Passport authentication
 
