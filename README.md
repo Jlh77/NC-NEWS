@@ -6,7 +6,9 @@ To see all available end points and example responses, a GET request can be made
 
 ## Link To Hosted Version
 
-A live version of this project is running here on Heroku: https://nc-news77.herokuapp.com/
+A live version of this project is running here on Heroku: https://nc-news77.netlify.app/
+
+With the api being served from heroku here: https://nc-news77.herokuapp.com/
 
 ## Setup
 
