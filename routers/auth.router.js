@@ -1,9 +1,16 @@
-const { auth, articles } = require("../controllers/");
+const { auth } = require("../controllers/");
 const authRouter = require("express").Router();
+const passport = require("passport");
 
 // local
 
-authRouter.route("/login").post(auth.login);
+authRouter.route("/login").post(
+  passport.authenticate("local-login", {
+    failureFlash: true,
+    successRedirect: "/account",
+    failureRedirect: "/login",
+  })
+);
 
 authRouter.route("/join").post(auth.join);
 
