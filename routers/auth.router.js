@@ -7,16 +7,16 @@ const passport = require("passport");
 authRouter.route("/login").post(
   passport.authenticate("local-login", {
     failureFlash: true,
-    successRedirect: "http://localhost:3000/account",
-    failureRedirect: "http://localhost:3000/login",
+    // successRedirect: "http://localhost:3000/account",
+    // failureRedirect: "http://localhost:3000/login",
   })
 );
 
 authRouter.route("/join").post(
   passport.authenticate("local-register", {
     failureFlash: true,
-    successRedirect: "http://localhost:3000/login",
-    failureRedirect: "http://localhost:3000/join",
+    // successRedirect: "http://localhost:3000/login",
+    // failureRedirect: "http://localhost:3000/join",
   })
 );
 
