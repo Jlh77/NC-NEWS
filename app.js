@@ -20,7 +20,7 @@ app.use(
   session({
     name: "SSID",
     secret: process.env.SESSION_SECRET,
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     store: new pgSession({
       pool: db,
