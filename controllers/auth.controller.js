@@ -3,15 +3,11 @@ const { authModel } = require("../models");
 const passport = require("passport");
 
 exports.login = async (req, res, next) => {
-  try {
-    passport.authenticate("local-login", {
-      failureFlash: true,
-      successRedirect: "/account",
-      failureRedirect: "/login",
-    });
-  } catch (err) {
-    next(err);
-  }
+  passport.authenticate("local-login", {
+    failureFlash: true,
+    successRedirect: "/account",
+    failureRedirect: "/login",
+  });
 };
 
 exports.join = async (req, res, next) => {
