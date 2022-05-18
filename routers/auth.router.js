@@ -3,9 +3,21 @@ const authRouter = require("express").Router();
 
 // local
 
-authRouter.route("/login").post(auth.login);
+authRouter.route("/login").post(
+  passport.authenticate("local-login", {
+    failureFlash: true,
+    successRedirect: "http://localhost:3000/account",
+    failureRedirect: "http://localhost:3000/login",
+  })
+);
 
-authRouter.route("/join").post(auth.join);
+authRouter.route("/join").post(
+  passport.authenticate("local-register", {
+    failureFlash: true,
+    successRedirect: "http://localhost:3000/login",
+    failureRedirect: "http://localhost:3000/join",
+  })
+);
 
 // logout
 
