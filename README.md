@@ -6,9 +6,9 @@ To see all available end points and example responses, a GET request can be made
 
 ## Link To Hosted Version
 
-A live version of this project is running here on Heroku: https://nc-news77.netlify.app/
+A live version of this project is running here on Netlify: https://nc-news77.netlify.app/
 
-With the api being served from heroku here: https://nc-news77.herokuapp.com/
+With the api being served from Heroku here: https://nc-news77.herokuapp.com/
 
 ## Setup
 
@@ -66,4 +66,4 @@ To clone this project for yourself, you will need to:
     $ node app.listen.js
     ```
 
-    to start a server and make request to you localhost, which will run in development mode.
+    to start a server and make requests to your localhost, which will run in development mode.
