@@ -50,7 +50,7 @@ if (!process.env.NODE_ENV === "test") {
     })
   );
 
-  app.get("/getCSRFToken", (req, res) => {
+  app.get("/api/auth/getCSRFToken", (req, res) => {
     res.json({ CSRFToken: req.CSRFToken() });
   });
 }
