@@ -65,8 +65,8 @@ exports.getUserData = async (req, res, next) => {
     if (!req.user) {
       res.send(null);
     } else {
-      delete req.user.password;
-      delete req.user.salt;
+      req.user.password = undefined;
+      req.user.salt = undefined;
       /*res.json({
             email: req.user.email,
             verified: req.user.verified,
@@ -75,7 +75,9 @@ exports.getUserData = async (req, res, next) => {
       // for development purposes only
       res.send(req.user);
     }
-  } catch (err) {}
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.logout;
