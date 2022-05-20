@@ -15,7 +15,6 @@ const flash = require("express-flash");
 const db = require("./db/connection");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
-const csurf = require("csurf");
 
 app.use(flash());
 app.use(helmet());
@@ -40,15 +39,21 @@ app.use(
   })
 );
 
-app.use(
-  csurf({
-    cookie: true,
-  })
-);
+if (!process.env.NODE_ENV === "test") {
+  const cookieParser = require("cookie-parser");
+  app.use(cookieParser());
 
-app.get("/getCSRFToken", (req, res) => {
-  res.json({ CSRFToken: req.CSRFToken() });
-});
+  const csurf = require("csurf");
+  app.use(
+    csurf({
+      cookie: true,
+    })
+  );
+
+  app.get("/getCSRFToken", (req, res) => {
+    res.json({ CSRFToken: req.CSRFToken() });
+  });
+}
 
 require("./config/passport");
 
