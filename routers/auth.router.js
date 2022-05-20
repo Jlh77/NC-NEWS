@@ -52,6 +52,12 @@ authRouter.route("/oauth/google/unlink").get(auth.handleUnlinkGoogle);
 
 // authRouter.route("/oauth/facebook/unlink").get(auth.handleUnlinkFacebook);
 
+// get anti-csrf token route
+
+authRouter.route("/getCSRFToken", (req, res) => {
+  res.json({ CSRFToken: req.CSRFToken() });
+});
+
 // logged in user api
 
 authRouter.route("/current-user").get(auth.getUserData);

@@ -49,10 +49,6 @@ if (!process.env.NODE_ENV === "test") {
       cookie: true,
     })
   );
-
-  app.get("/api/auth/getCSRFToken", (req, res) => {
-    res.json({ CSRFToken: req.CSRFToken() });
-  });
 }
 
 require("./config/passport");
