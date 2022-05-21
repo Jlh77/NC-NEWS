@@ -49,6 +49,9 @@ if (!process.env.NODE_ENV === "test") {
       cookie: true,
     })
   );
+  console.log(
+    "csurf implemented<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+  );
 }
 
 require("./config/passport");
