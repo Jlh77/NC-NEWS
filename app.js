@@ -49,14 +49,11 @@ if (process.env.NODE_ENV !== "test") {
     csurf({
       cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        //secure: process.env.NODE_ENV === "production",
         //maxAge: 3600,
       },
     })
   );
-  app.get("/api/auth/getCSRFToken", (req, res) => {
-    res.json({ CSRFToken: req.CSRFToken() });
-  });
   console.log(">csurf implemented<<<<<<");
 }
 
