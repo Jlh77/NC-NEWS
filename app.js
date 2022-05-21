@@ -39,20 +39,20 @@ app.use(
   })
 );
 
-if (!process.env.NODE_ENV === "test") {
-  const cookieParser = require("cookie-parser");
-  app.use(cookieParser());
+// if (!process.env.NODE_ENV === "test") {
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
-  const csurf = require("csurf");
-  app.use(
-    csurf({
-      cookie: true,
-    })
-  );
-  console.log(
-    "csurf implemented<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  );
-}
+const csurf = require("csurf");
+app.use(
+  csurf({
+    cookie: true,
+  })
+);
+console.log(
+  "csurf implemented<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+);
+// }
 
 require("./config/passport");
 
