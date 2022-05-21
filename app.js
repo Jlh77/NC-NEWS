@@ -54,7 +54,7 @@ if (process.env.NODE_ENV !== "test") {
       },
     })
   );
-  app.get("api/auth/getCSRFToken", (req, res) => {
+  app.get("/api/auth/getCSRFToken", (req, res) => {
     res.json({ CSRFToken: req.CSRFToken() });
   });
   console.log(">csurf implemented<<<<<<");
