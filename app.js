@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 
 // Cors should specify one place
 
+const cors = require("cors");
 app.use(cors());
+
 app.use(express.json());
 
 // Passport authentication
@@ -74,6 +75,7 @@ app.use((req, res) => {
 
 app.use(errorHandlers.customError);
 app.use(errorHandlers.psql);
+app.use(errorHandlers.badCSRFToken);
 app.use(errorHandlers.unknownGenericError);
 
 module.exports = app;

@@ -17,7 +17,15 @@ exports.psql = (err, req, res, next) => {
   }
 };
 
+exports.badCSRFToken = (err, req, res, next) => {
+  if (err.code == "EBADCSRFTOKEN") {
+    res.status(403).send({ msg: "Form tampered with, request denied" });
+  } else {
+    next(err);
+  }
+};
+
 exports.unknownGenericError = (err, req, res, next) => {
-  console.log(err, ">>>>>>> 500");
+  console.log("500 server error >>>>>>>", err, ">>>>>>> 500");
   res.status(500).send({ msg: "Internal Server Error" });
 };
