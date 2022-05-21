@@ -47,11 +47,12 @@ if (process.env.NODE_ENV !== "test") {
   const csurf = require("csurf");
   app.use(
     csurf({
-      cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        //maxAge: 3600,
-      },
+      cookie: true,
+      // {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === "production",
+      //   //maxAge: 3600,
+      // },
     })
   );
   console.log(">csurf implemented<<<<<<");
