@@ -54,9 +54,9 @@ authRouter.route("/oauth/google/unlink").get(auth.handleUnlinkGoogle);
 
 // get anti-csrf token route
 
-authRouter.route("/getCSRFToken").get((req, res) => {
-  res.json({ CSRFToken: req.CSRFToken() });
-});
+// authRouter.route("/getCSRFToken").get((req, res) => {
+//   res.json({ CSRFToken: req.CSRFToken() });
+// });
 
 // logged in user api
 
