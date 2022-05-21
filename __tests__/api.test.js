@@ -1,24 +1,24 @@
-// const db = require("../db/connection");
-// const seed = require("../db/seeds/seed");
-// const testData = require("../db/data/test-data");
-// const app = require("../app.js");
-// const request = require("supertest")(app);
-// require("jest-sorted");
+const db = require("../db/connection");
+const seed = require("../db/seeds/seed");
+const testData = require("../db/data/test-data");
+const app = require("../app.js");
+const request = require("supertest")(app);
+require("jest-sorted");
 
-// // Would ideally add smth like .set("Cookie", ["myApp-token=12345667", "myApp-other=blah"]); to every post request, to allow testing for csrf attacks here,
-// // but for this project to keep it simple I decided against and instead ignore setting csrf middleware in app.js if in testing mode with jest.
+// Would ideally add smth like .set("Cookie", ["myApp-token=12345667", "myApp-other=blah"]); to every post request, to allow testing for csrf attacks here,
+// but for this project to keep it simple I decided against and instead ignore setting csrf middleware in app.js if in testing mode with jest.
 
-// afterAll(() => db.end());
-// beforeEach(() => seed(testData));
+afterAll(() => db.end());
+beforeEach(() => seed(testData));
 
-// describe("general 404 error handling", () => {
-//   test("404 - successful error handling", async () => {
-//     const { body } = await request
-//       .get("/this-url-does-not-exist-404")
-//       .expect(404);
-//     expect(body.msg).toBe("Not Found");
-//   });
-// });
+describe("general 404 error handling", () => {
+  test("404 - successful error handling", async () => {
+    const { body } = await request
+      .get("/this-url-does-not-exist-404")
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+});
 
 // describe("All /api endpoints", () => {
 //   test("GET /api returns endpoints.json", async () => {
