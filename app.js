@@ -18,10 +18,10 @@ const cors = require("cors");
 app.use(
   cors({
     credentials: true,
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://nc-news77.netlify.app/"
-        : "http://localhost:3000",
+    origin: "http://localhost:3000",
+    // process.env.NODE_ENV === "production"
+    //   ? "https://nc-news77.netlify.app/"
+    //   : "http://localhost:3000",
   })
 );
 
