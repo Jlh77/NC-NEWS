@@ -59,7 +59,7 @@ passport.use(
       // find a user whose email is the same as the forms email
       try {
         const username = req.body.username;
-        console.log(username);
+        console.log(username, email, password);
         const { rows } = await db.query(
           "SELECT * FROM users WHERE email = $1;",
           [email]
