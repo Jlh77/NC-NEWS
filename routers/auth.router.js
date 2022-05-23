@@ -11,7 +11,7 @@ authRouter.route("/login").post(
   //   // failureRedirect: "http://localhost:3000/login",
   // })
 
-  passport.authenticate("local-login", { failureFlash: true }, (err, user) => {
+  passport.authenticate("local-login", (err, user) => {
     if (err) console.log(err);
     if (!user)
       res.status(401).send({
