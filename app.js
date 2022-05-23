@@ -15,7 +15,15 @@ const pgSession = require("connect-pg-simple")(session);
 app.use(flash());
 app.use(helmet());
 const cors = require("cors");
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://nc-news77.netlify.app/"
+        : "http://localhost:3000",
+  })
+);
 
 app.use(
   session({
