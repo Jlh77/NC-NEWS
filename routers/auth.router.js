@@ -4,27 +4,23 @@ const passport = require("passport");
 
 // local
 
-authRouter.route("/login").post(
-  // passport.authenticate("local-login", {
-  //   failureFlash: true,
-  //   // successRedirect: "http://localhost:3000/account",
-  //   // failureRedirect: "http://localhost:3000/login",
-  // })
+// passport.authenticate("local-login", {
+//   failureFlash: true,
+//   // successRedirect: "http://localhost:3000/account",
+//   // failureRedirect: "http://localhost:3000/login",
+// })
 
-  passport.authenticate("local-login", (err, user) => {
-    if (err) console.log(err);
-    if (!user)
-      res.status(401).send({
-        msg: "Email or password is incorrect",
-      });
+authRouter.route("/login").post((req, res, next) => {
+  passport.authenticate("local-login", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).send(info);
     else {
-      // req.logIn(user, (err) => {
-      //   res.send({ msg: "Login Successful" });
-      // });
-      res.status(200).send({ msg: "Login Successful" });
+      req.logIn(user, (err) => {
+        res.send({ user });
+      });
     }
-  })
-);
+  })(req, res, next);
+});
 
 authRouter.route("/join").post(
   passport.authenticate("local-register", {
