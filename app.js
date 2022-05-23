@@ -30,7 +30,7 @@ app.use(
     }),
     proxy: true,
     cookie: {
-      secure: true,
+      secure: false, //process.env.NODE_ENV === "production",
       httpOnly: true,
       maxAge: 5184000000, //1000 * 60 * 60 * 24 * 60 (Lasts 60 days)
     },
