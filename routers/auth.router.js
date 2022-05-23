@@ -5,10 +5,24 @@ const passport = require("passport");
 // local
 
 authRouter.route("/login").post(
-  passport.authenticate("local-login", {
-    failureFlash: true,
-    // successRedirect: "http://localhost:3000/account",
-    // failureRedirect: "http://localhost:3000/login",
+  // passport.authenticate("local-login", {
+  //   failureFlash: true,
+  //   // successRedirect: "http://localhost:3000/account",
+  //   // failureRedirect: "http://localhost:3000/login",
+  // })
+
+  passport.authenticate("local-login", { failureFlash: true }, (err, user) => {
+    if (err) console.log(err);
+    if (!user)
+      res.status(401).send({
+        msg: "Email or password is incorrect",
+      });
+    else {
+      // req.logIn(user, (err) => {
+      //   res.send({ msg: "Login Successful" });
+      // });
+      res.status(200).send({ msg: "Login Successful" });
+    }
   })
 );
 
