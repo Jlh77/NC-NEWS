@@ -59,7 +59,6 @@ passport.use(
       // find a user whose email is the same as the forms email
       try {
         const username = req.body.username;
-        console.log(username, email, password);
         const { rows } = await db.query(
           "SELECT * FROM users WHERE email = $1;",
           [email]
@@ -82,7 +81,7 @@ passport.use(
           // if there is no user with that email
           // create the user
           const saltHash = genHash(password);
-          password = ""; // Erase plain text password jic
+          password = "";
 
           let newUser = {
             email: email.toLowerCase(),

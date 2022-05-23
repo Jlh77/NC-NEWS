@@ -15,8 +15,8 @@ const createTables = async () => {
   CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR UNIQUE NOT NULL,
-    name VARCHAR NOT NULL,
     email VARCHAR UNIQUE NOT NULL,
+    name VARCHAR,
     password VARCHAR,
     salt VARCHAR,
     original_method VARCHAR(2),
