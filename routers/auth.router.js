@@ -4,12 +4,6 @@ const passport = require("passport");
 
 // local
 
-// passport.authenticate("local-login", {
-//   failureFlash: true,
-//   // successRedirect: "http://localhost:3000/account",
-//   // failureRedirect: "http://localhost:3000/login",
-// })
-
 authRouter.route("/login").post((req, res, next) => {
   passport.authenticate("local-login", (err, user, info) => {
     if (err) return next(err);
@@ -22,13 +16,17 @@ authRouter.route("/login").post((req, res, next) => {
   })(req, res, next);
 });
 
-authRouter.route("/join").post(
-  passport.authenticate("local-register", {
-    failureFlash: true,
-    // successRedirect: "http://localhost:3000/login",
-    // failureRedirect: "http://localhost:3000/join",
-  })
-);
+authRouter.route("/join").post((req, res, next) => {
+  passport.authenticate("local-register", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).send(info);
+    else {
+      req.logIn(user, (err) => {
+        res.send({ user });
+      });
+    }
+  })(req, res, next);
+});
 
 // logout
 
