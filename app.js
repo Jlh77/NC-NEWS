@@ -6,26 +6,27 @@ app.use(express.json());
 // Passport authentication
 
 const passport = require("passport");
+const cors = require("cors");
 const helmet = require("helmet");
 const flash = require("express-flash");
 const db = require("./db/connection");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 
+const production = process.env.NODE_ENV === "production" ? true : false;
+
 app.use(flash());
 app.use(helmet());
-const cors = require("cors");
 app.use(
   cors({
     credentials: true,
     origin: "http://localhost:3000",
-    // process.env.NODE_ENV === "production"
+    // production
     //   ? "https://nc-news77.netlify.app/"
     //   : "http://localhost:3000",
   })
 );
 
-app.set("trust proxy", 1);
 app.use(
   session({
     name: "SSID",
@@ -37,12 +38,11 @@ app.use(
       tableName: "user_sessions",
       createTableIfMissing: true,
     }),
-    proxy: true,
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: production,
       httpOnly: true,
       maxAge: 5184000000, //1000 * 60 * 60 * 24 * 60 (Lasts 60 days)
-      sameSite: "none",
+      sameSite: production ? "none" : undefined,
     },
   })
 );
@@ -56,7 +56,7 @@ app.use(
 //     csurf({
 //       cookie: {
 //         httpOnly: true,
-//         secure: process.env.NODE_ENV === "production",
+//         secure: production,
 //         //maxAge: 3600,
 //       },
 //     })
