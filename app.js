@@ -1,11 +1,6 @@
 const express = require("express");
 const app = express();
 
-// Cors should specify one place
-
-const cors = require("cors");
-app.use(cors());
-
 app.use(express.json());
 
 // Passport authentication
@@ -19,6 +14,8 @@ const pgSession = require("connect-pg-simple")(session);
 
 app.use(flash());
 app.use(helmet());
+const cors = require("cors");
+app.use(cors());
 
 app.use(
   session({
