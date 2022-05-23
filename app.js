@@ -15,7 +15,13 @@ const pgSession = require("connect-pg-simple")(session);
 app.use(flash());
 app.use(helmet());
 const cors = require("cors");
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 app.use(
   session({
