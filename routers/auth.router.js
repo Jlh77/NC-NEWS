@@ -18,11 +18,10 @@ authRouter.route("/login").post((req, res, next) => {
 
 authRouter.route("/join").post((req, res, next) => {
   passport.authenticate("local-register", (err, user, info) => {
+    console.log("BAD REQUEST? >>>", info);
     if (err) return next(err);
-    if (!user) {
-      console.log("BAD REQUEST? >>>", info);
-      return res.status(401).send(info);
-    } else {
+    if (!user) return res.status(401).send(info);
+    else {
       req.logIn(user, (err) => {
         res.send({ user });
       });
