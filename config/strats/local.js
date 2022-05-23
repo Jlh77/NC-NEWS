@@ -58,6 +58,7 @@ passport.use(
     async (req, email, password, done) => {
       // find a user whose email is the same as the forms email
       try {
+        const username = req.body.username;
         const { rows } = await db.query(
           "SELECT * FROM users WHERE email = $1;",
           [email]
@@ -74,7 +75,7 @@ passport.use(
         }
         if (rows.length) {
           return done(null, false, {
-            message: "That email is already registered.",
+            message: "This email is already registered.",
           });
         } else {
           // if there is no user with that email
@@ -90,13 +91,7 @@ passport.use(
 
           const { rows } = await db.query(
             "INSERT INTO users (email, username, password, salt, original_method) VALUES ($1, $2, $3, $4, $5)",
-            [
-              newUser.email,
-              req.body.username,
-              newUser.password,
-              newUser.salt,
-              "lo",
-            ]
+            [newUser.email, username, newUser.password, newUser.salt, "lo"]
           );
 
           if (err) {
