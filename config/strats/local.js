@@ -85,18 +85,16 @@ passport.use(
 
           let newUser = {
             email: email.toLowerCase(),
+            username,
             password: saltHash.hash,
             salt: saltHash.salt,
           };
 
           const { rows } = await db.query(
-            "INSERT INTO users (email, username, password, salt, original_method) VALUES ($1, $2, $3, $4, $5)",
+            "INSERT INTO users (email, username, password, salt, original_method) VALUES ($1, $2, $3, $4, $5);",
             [newUser.email, username, newUser.password, newUser.salt, "lo"]
           );
 
-          if (err) {
-            return done(err);
-          }
           return done(null, rows[0]);
         }
       } catch (err) {
