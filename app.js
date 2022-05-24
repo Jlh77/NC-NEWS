@@ -6,8 +6,8 @@ app.use(express.json());
 // Passport authentication
 
 const passport = require("passport");
-const cors = require("cors");
 const helmet = require("helmet");
+const cors = require("cors");
 const db = require("./db/connection");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
@@ -23,6 +23,8 @@ app.use(
       : "http://localhost:3000",
   })
 );
+
+app.set("trust proxy", 1);
 
 app.use(
   session({
