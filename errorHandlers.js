@@ -17,13 +17,25 @@ exports.psql = (err, req, res, next) => {
   }
 };
 
-exports.badCSRFToken = (err, req, res, next) => {
-  if (err.code == "EBADCSRFTOKEN") {
-    res.status(403).send({ msg: "Form tampered with, request denied" });
+exports.usernameAlreadyTaken = (err, req, res, next) => {
+  if (
+    err.code === "23505" &&
+    err.table === "users" &&
+    err.constraint === "users_username_key"
+  ) {
+    res.status(400).send({ msg: "Username already taken." });
   } else {
     next(err);
   }
 };
+
+// exports.badCSRFToken = (err, req, res, next) => {
+//   if (err.code == "EBADCSRFTOKEN") {
+//     res.status(403).send({ msg: "Form tampered with, request denied" });
+//   } else {
+//     next(err);
+//   }
+// };
 
 exports.unknownGenericError = (err, req, res, next) => {
   console.log("500 server error >>>>>>>", err, ">>>>>>> 500");

@@ -3,10 +3,6 @@ const app = express();
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log("req made");
-  next();
-});
 // Passport authentication
 
 const passport = require("passport");
@@ -71,6 +67,13 @@ require("./config/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    console.log("this guy is authed");
+  }
+  next();
+});
+
 // Add routes
 
 const apiRouter = require("./routers/api.router");
@@ -86,7 +89,8 @@ app.use((req, res) => {
 
 app.use(errorHandlers.customError);
 app.use(errorHandlers.psql);
-app.use(errorHandlers.badCSRFToken);
+app.use(errorHandlers.usernameAlreadyTaken);
+// app.use(errorHandlers.badCSRFToken);
 app.use(errorHandlers.unknownGenericError);
 
 module.exports = app;
