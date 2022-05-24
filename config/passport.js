@@ -24,6 +24,7 @@ require("./strats/facebook");
 
 // Used to serialize the user for the session
 passport.serializeUser((user, done) => {
+  console.log("serialising user...");
   done(null, user.user_id);
 });
 
