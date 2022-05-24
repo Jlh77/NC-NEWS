@@ -92,7 +92,13 @@ passport.use(
 
           const { rows } = await db.query(
             "INSERT INTO users (email, username, password, salt, original_method) VALUES ($1, $2, $3, $4, $5);",
-            [newUser.email, username, newUser.password, newUser.salt, "lo"]
+            [
+              newUser.email,
+              newUser.username,
+              newUser.password,
+              newUser.salt,
+              "lo",
+            ]
           );
 
           return done(null, rows[0]);
