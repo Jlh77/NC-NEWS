@@ -1,4 +1,5 @@
 const passport = require("passport");
+const db = require("../db/connection");
 
 const ENV = process.env.NODE_ENV || "development";
 
@@ -28,9 +29,13 @@ passport.serializeUser((user, done) => {
 
 // Used to deserialize the user
 passport.deserializeUser(async (id, done) => {
-  const { rows } = await pool.query(
-    "SELECT user_id, username, name, email, avatar_url, verified, google_id, google_display_name, google_email, facebook_id, facebook_email, joined FROM users WHERE user_id = $1;",
-    [id]
-  );
-  done(err, rows[0]);
+  try {
+    const { rows } = await db.query(
+      "SELECT user_id, username, name, email, avatar_url, verified, google_id, google_display_name, google_email, facebook_id, facebook_email, joined FROM users WHERE user_id = $1;",
+      [id]
+    );
+    done(null, rows[0]);
+  } catch (err) {
+    done(err, null);
+  }
 });

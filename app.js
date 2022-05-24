@@ -3,27 +3,28 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log("req made");
+  next();
+});
 // Passport authentication
 
 const passport = require("passport");
 const cors = require("cors");
 const helmet = require("helmet");
-const flash = require("express-flash");
 const db = require("./db/connection");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 
-const production = process.env.NODE_ENV === "production" ? true : false;
+const isProduction = process.env.NODE_ENV === "production" ? true : false;
 
-app.use(flash());
 app.use(helmet());
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
-    // production
-    //   ? "https://nc-news77.netlify.app/"
-    //   : "http://localhost:3000",
+    origin: isProduction
+      ? "https://nc-news77.netlify.app/"
+      : "http://localhost:3000",
   })
 );
 
@@ -34,15 +35,16 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new pgSession({
+      conString: process.env.DATABASE_URL,
       pool: db,
       tableName: "user_sessions",
       createTableIfMissing: true,
     }),
     cookie: {
-      secure: production,
+      secure: isProduction,
       httpOnly: true,
       maxAge: 5184000000, //1000 * 60 * 60 * 24 * 60 (Lasts 60 days)
-      sameSite: production ? "none" : undefined,
+      sameSite: isProduction ? "none" : undefined,
     },
   })
 );
@@ -56,7 +58,7 @@ app.use(
 //     csurf({
 //       cookie: {
 //         httpOnly: true,
-//         secure: production,
+//         secure: isProduction,
 //         //maxAge: 3600,
 //       },
 //     })

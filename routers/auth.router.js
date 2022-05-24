@@ -10,7 +10,7 @@ authRouter.route("/login").post((req, res, next) => {
     if (!user) return res.status(401).send(info);
     else {
       req.logIn(user, (err) => {
-        res.send({ user });
+        res.send({ message: "Succesfully logged in" });
       });
     }
   })(req, res, next);
@@ -22,7 +22,7 @@ authRouter.route("/join").post((req, res, next) => {
     if (!user) return res.status(401).send(info);
     else {
       req.logIn(user, (err) => {
-        res.send({ user });
+        res.send({ message: "Successfully registered" });
       });
     }
   })(req, res, next);

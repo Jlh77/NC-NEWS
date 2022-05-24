@@ -3,8 +3,7 @@ const { authModel } = require("../models");
 exports.logout = async (req, res, next) => {
   try {
     req.logout();
-    req.flash("flashmsg", "You are now logged out.");
-    res.redirect("/login");
+    res.status(200).send({ msg: "You are now logged out." });
   } catch (err) {
     next(err);
   }
@@ -15,10 +14,11 @@ exports.logoutAllDevices = async (req, res, next) => {
     if (req.isAuthenticated()) {
       await authModel.logoutAllDevices();
       req.logout();
-      req.flash("error", "You have been logged out on all devices.");
-      res.redirect("/login");
+      res.status(200).send({ msg: "You have been logged out on all devices." });
     } else {
-      res.redirect("/login");
+      res.status(400).send({
+        msg: "You are were not logged in when you tried to logout of all devices. Please login to try again.",
+      });
     }
   } catch (err) {
     next(err);
@@ -67,12 +67,6 @@ exports.getUserData = async (req, res, next) => {
     } else {
       req.user.password = undefined;
       req.user.salt = undefined;
-      /*res.json({
-            email: req.user.email,
-            verified: req.user.verified,
-            joined: req.user.joined
-        });*/
-      // for development purposes only
       res.send(req.user);
     }
   } catch (err) {
