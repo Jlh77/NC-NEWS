@@ -23,7 +23,7 @@ app.use(
   cors({
     credentials: true,
     origin: isProduction
-      ? "https://nc-news77.netlify.app/"
+      ? "https://nc-news77.netlify.app"
       : "http://localhost:3000",
   })
 );
