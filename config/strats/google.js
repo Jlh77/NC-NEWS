@@ -36,8 +36,7 @@ passport.use(
           // If google account is duplicate (linked to different account) will return error
           return done(null, false, {
             success: false,
-            message:
-              "The Google account you tried to link is already associated with another account.",
+            msg: "The Google account you tried to link is already associated with another account.",
           }); //IMPORTANT Error flash not working, fix
         }
       }
