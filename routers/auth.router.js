@@ -30,7 +30,7 @@ authRouter.route("/join").post((req, res, next) => {
 
 // logout
 
-authRouter.route("/logout").get(auth.logout);
+authRouter.route("/logout").post(auth.logout);
 
 authRouter.route("/logout-all-devices").get(auth.logoutAllDevices);
 
