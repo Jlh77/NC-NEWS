@@ -25,7 +25,7 @@ passport.use(
           req.user.google_email = profile.emails[0].value;
           req.user.google_display_name = profile.displayName;
 
-          const { rows } = await db.query(
+          await db.query(
             "UPDATE users SET google_id = $1, google_email = $2 WHERE user_id = $3;",
             [req.user.google_id, req.user.google_email, req.user.id]
           );
@@ -67,7 +67,7 @@ passport.use(
             existingUser.google_email = profile.emails[0].value;
             existingUser.google_display_name = profile.displayName;
 
-            const rows = await db.query(
+            await db.query(
               "UPDATE users SET google_id = $1, google_email = $2 WHERE user_id = $3;",
               [
                 existingUser.google_id,
@@ -93,18 +93,40 @@ passport.use(
               avatar_url: profile.coverPhoto || null,
             };
 
-            const { rows } = await db.query(
-              "INSERT INTO users (email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
-              [
-                newUser.email,
-                newUser.google_id,
-                newUser.method,
-                newUser.name,
-                newUser.google_email,
-                newUser.avatar_url,
-              ]
-            );
-            return done(null, rows[0]);
+            // Specific to this platform, will try display_name as username else create random username
+            try {
+              const { rows } = await db.query(
+                "INSERT INTO users (email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
+                [
+                  newUser.email,
+                  newUser.google_id,
+                  newUser.method,
+                  newUser.name,
+                  newUser.google_email,
+                  newUser.avatar_url,
+                ]
+              );
+              return done(null, rows[0]);
+            } catch (err) {
+              // if username in use (or invalid) create random one
+              if (
+                err.code === "23505" &&
+                err.constraint === "users_username_key"
+              ) {
+                const { rows } = await db.query(
+                  "INSERT INTO users (email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
+                  [
+                    `user${Math.random().toString().substr(2, 8)}`,
+                    newUser.google_id,
+                    newUser.method,
+                    newUser.name,
+                    newUser.google_email,
+                    newUser.avatar_url,
+                  ]
+                );
+                return done(null, rows[0]);
+              }
+            }
           }
         } catch (err) {
           return done(err);

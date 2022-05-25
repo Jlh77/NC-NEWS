@@ -22,11 +22,11 @@ const createTables = async () => {
     original_method VARCHAR(2),
     avatar_url VARCHAR,
     verified BOOL NOT NULL DEFAULT false,
-    google_id VARCHAR,
+    google_id VARCHAR UNIQUE,
     google_display_name VARCHAR,
-    google_email VARCHAR,
-    facebook_id VARCHAR,
-    facebook_email VARCHAR,
+    google_email VARCHAR UNIQUE,
+    facebook_id VARCHAR UNIQUE,
+    facebook_email VARCHAR UNIQUE,
     joined TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );${updatedAtTrigger("users")}`);
