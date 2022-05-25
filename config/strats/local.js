@@ -89,7 +89,7 @@ passport.use(
           };
 
           const { rows } = await db.query(
-            "INSERT INTO users (email, username, password, salt, original_method) VALUES ($1, $2, $3, $4, $5);",
+            "INSERT INTO users (email, username, password, salt, original_method) VALUES ($1, $2, $3, $4, $5) RETURNING *;",
             [
               newUser.email,
               newUser.username,
@@ -99,10 +99,14 @@ passport.use(
             ]
           );
 
+          console.log(rows[0]);
           return done(null, rows[0]);
         }
       } catch (err) {
-        return done(err);
+        console.log(err);
+        return done(err, null, {
+          msg: "An error has occured, Please try again.",
+        });
       }
     }
   )
