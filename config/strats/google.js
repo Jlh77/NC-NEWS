@@ -12,15 +12,13 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 passport.use(
   new GoogleStrategy( // Default name google
     {
-      clientID:
-        "71680911267-auphieaikk3ne318jjjpks0qmd09p0l2.apps.googleusercontent.com", //process.env.GOOGLE_CLIENT_ID,
-      clientSecret: "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", //process.env.GOOGLE_CLIENT_SECRET,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
       passReqToCallback: true,
     },
     async (req, accessToken, refreshToken, profile, done) => {
       // If user is logged in, proceed to simply link account
-      console.log(profile, "This is google prof");
       if (req.user) {
         try {
           req.user.google_id = profile.id;
@@ -39,7 +37,7 @@ passport.use(
           return done(null, false, {
             success: false,
             msg: "The Google account you tried to link is already associated with another account.",
-          }); //IMPORTANT Error flash not working, fix
+          });
         }
       }
 
