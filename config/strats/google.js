@@ -19,6 +19,7 @@ passport.use(
     },
     async (req, accessToken, refreshToken, profile, done) => {
       // If user is logged in, proceed to simply link account
+      console.log(profile, "This is google prof");
       if (req.user) {
         try {
           req.user.google_id = profile.id;
@@ -80,6 +81,7 @@ passport.use(
           // If no existing record, register the user.
           else {
             const newUser = {
+              displayName: profile.displayName,
               email: profile.emails[0].value,
               // Google account specific fields
               google_id: profile.id,
@@ -96,8 +98,9 @@ passport.use(
             // Specific to this platform, will try display_name as username else create random username
             try {
               const { rows } = await db.query(
-                "INSERT INTO users (email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
+                "INSERT INTO users (username, email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;",
                 [
+                  newUser.displayName,
                   newUser.email,
                   newUser.google_id,
                   newUser.method,
@@ -114,9 +117,10 @@ passport.use(
                 err.constraint === "users_username_key"
               ) {
                 const { rows } = await db.query(
-                  "INSERT INTO users (email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;",
+                  "INSERT INTO users (username, email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;",
                   [
                     `user${Math.random().toString().substr(2, 8)}`,
+                    newUser.email,
                     newUser.google_id,
                     newUser.method,
                     newUser.name,
