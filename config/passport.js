@@ -1,10 +1,10 @@
 const passport = require("passport");
 const db = require("../db/connection");
 
-const ENV = process.env.NODE_ENV || "development";
+const { NODE_ENV } = process.env || "development";
 
 require("dotenv").config({
-  path: `${__dirname}/../.env.${ENV}`,
+  path: `${__dirname}/../.env.${NODE_ENV}`,
 });
 
 /* ---------- PassportJS Configuration ---------- */
@@ -24,7 +24,6 @@ require("./strats/facebook");
 
 // Used to serialize the user for the session
 passport.serializeUser((user, done) => {
-  console.log("serialising user...");
   done(null, user.user_id);
 });
 

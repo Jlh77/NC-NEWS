@@ -1,4 +1,31 @@
 const { authModel } = require("../models");
+const passport = require("passport");
+
+const isProduction = process.env.NODE_ENV === "production" ? true : false;
+
+exports.login = (req, res, next) => {
+  passport.authenticate("local-login", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).send(info);
+    else {
+      req.logIn(user, (err) => {
+        res.send({ message: "Succesfully logged in" });
+      });
+    }
+  })(req, res, next);
+};
+
+exports.join = (req, res, next) => {
+  passport.authenticate("local-register", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).send(info);
+    else {
+      req.logIn(user, (err) => {
+        res.send({ message: "Successfully registered" });
+      });
+    }
+  })(req, res, next);
+};
 
 exports.logout = async (req, res, next) => {
   try {
@@ -39,11 +66,8 @@ exports.resetPassword = async (req, res, next) => {
   }
 };
 
-exports.handleOAuthGoogleRedirect = async (req, res, next) => {
-  try {
-  } catch (err) {
-    next(err);
-  }
+exports.handleOAuthGoogleRedirect = (req, res) => {
+  res.status(200).redirect("http://localhost:3000");
 };
 
 exports.handleUnlinkGoogle = async (req, res, next) => {

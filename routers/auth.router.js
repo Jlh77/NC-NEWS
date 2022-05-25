@@ -4,29 +4,9 @@ const passport = require("passport");
 
 // local
 
-authRouter.route("/login").post((req, res, next) => {
-  passport.authenticate("local-login", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(401).send(info);
-    else {
-      req.logIn(user, (err) => {
-        res.send({ message: "Succesfully logged in" });
-      });
-    }
-  })(req, res, next);
-});
+authRouter.route("/login").post(auth.login);
 
-authRouter.route("/join").post((req, res, next) => {
-  passport.authenticate("local-register", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(401).send(info);
-    else {
-      req.logIn(user, (err) => {
-        res.send({ message: "Successfully registered" });
-      });
-    }
-  })(req, res, next);
-});
+authRouter.route("/join").post(auth.join);
 
 // logout
 
@@ -54,12 +34,8 @@ authRouter.route("/google/redirect").get(
   passport.authenticate("google", {
     failureRedirerct: "/login",
   }),
-  (req, res) => {
-    //auth.handleOAuthGoogleRedirect eventuallly put the cb in here;
-    res.status(200).redirect("http://localhost:3000");
-  }
+  auth.handleOAuthGoogleRedirect
 );
-
 authRouter.route("/google/unlink").get(auth.handleUnlinkGoogle);
 
 // facebook

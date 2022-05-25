@@ -99,11 +99,9 @@ passport.use(
             ]
           );
 
-          console.log(rows[0]);
           return done(null, rows[0]);
         }
       } catch (err) {
-        console.log(err);
         return done(err, null, {
           msg: "An error has occured, Please try again.",
         });
