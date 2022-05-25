@@ -12,8 +12,9 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 passport.use(
   new GoogleStrategy( // Default name google
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientID:
+        "71680911267-auphieaikk3ne318jjjpks0qmd09p0l2.apps.googleusercontent.com", //process.env.GOOGLE_CLIENT_ID,
+      clientSecret: "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", //process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
       passReqToCallback: true,
     },
@@ -62,51 +63,39 @@ passport.use(
             profile.emails[0].value,
           ]);
           rows = res.rows;
+          const userIdToLinkTo = rows[0]?.user_id;
 
           if (rows.length) {
-            const existingUser = rows[0];
-            existingUser.google_email = profile.emails[0].value;
-            existingUser.google_display_name = profile.displayName;
-
-            await db.query(
-              "UPDATE users SET google_id = $1, google_email = $2 WHERE user_id = $3;",
+            const { rows } = await db.query(
+              "UPDATE users SET google_id = $1, google_email = $2, google_display_name = $3 WHERE user_id = $4 RETURNING *;",
               [
-                existingUser.google_id,
-                existingUser.google_email,
-                existingUser.user_id,
+                profile.id,
+                profile.emails[0].value,
+                profile.displayName,
+                userIdToLinkTo,
               ]
             );
-            return done(null, existingUser);
+            return done(null, rows[0]);
           }
           // If no existing record, register the user.
           else {
-            const newUser = {
-              displayName: profile.displayName,
-              email: profile.emails[0].value,
-              // Google account specific fields
-              google_id: profile.id,
-              method: "gl", // This field ties this new user to the google account
-              // General fields (taken from the stuff google gives us)
-              name:
-                profile.name.givenName && profile.name.familyName
-                  ? `${profile.name.givenName} ${profile.name.familyName}`
-                  : "",
-              google_email: profile.emails[0].value,
-              avatar_url: profile.coverPhoto || null,
-            };
+            const name =
+              profile.name.givenName && profile.name.familyName
+                ? `${profile.name.givenName} ${profile.name.familyName}`
+                : "";
 
             // Specific to this platform, will try display_name as username else create random username
             try {
               const { rows } = await db.query(
                 "INSERT INTO users (username, email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;",
                 [
-                  newUser.displayName,
-                  newUser.email,
-                  newUser.google_id,
-                  newUser.method,
-                  newUser.name,
-                  newUser.google_email,
-                  newUser.avatar_url,
+                  profile.displayName,
+                  profile.emails[0].value,
+                  profile.id,
+                  "go",
+                  name,
+                  profile.emails[0].value,
+                  profile.coverPhoto,
                 ]
               );
               return done(null, rows[0]);
@@ -120,12 +109,12 @@ passport.use(
                   "INSERT INTO users (username, email, google_id, original_method, name, google_email, avatar_url) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;",
                   [
                     `user${Math.random().toString().substr(2, 8)}`,
-                    newUser.email,
-                    newUser.google_id,
-                    newUser.method,
-                    newUser.name,
-                    newUser.google_email,
-                    newUser.avatar_url,
+                    profile.emails[0].value,
+                    profile.id,
+                    "go",
+                    name,
+                    profile.emails[0].value,
+                    profile.coverPhoto,
                   ]
                 );
                 return done(null, rows[0]);

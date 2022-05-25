@@ -69,13 +69,6 @@ require("./config/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-  if (req.isAuthenticated()) {
-    console.log("this guy is authed");
-  }
-  next();
-});
-
 // Add routes
 
 const apiRouter = require("./routers/api.router");

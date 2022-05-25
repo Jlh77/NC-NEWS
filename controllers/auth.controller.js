@@ -39,13 +39,6 @@ exports.resetPassword = async (req, res, next) => {
   }
 };
 
-exports.handleOAuthGoogle = async (req, res, next) => {
-  try {
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.handleOAuthGoogleRedirect = async (req, res, next) => {
   try {
   } catch (err) {

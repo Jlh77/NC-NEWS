@@ -44,21 +44,33 @@ authRouter.route("/reset-password").post(auth.resetPassword);
 
 // google
 
-authRouter.route("/oauth/google").get(auth.handleOAuthGoogle);
+authRouter.route("/google").get(
+  passport.authenticate("google", {
+    scope: ["email", "profile"],
+  })
+);
 
-authRouter.route("/oauth/google/redirect").get(auth.handleOAuthGoogleRedirect);
+authRouter.route("/google/redirect").get(
+  passport.authenticate("google", {
+    failureRedirerct: "/login",
+  }),
+  (req, res) => {
+    //auth.handleOAuthGoogleRedirect eventuallly put the cb in here;
+    res.status(200).redirect("http://localhost:3000");
+  }
+);
 
-authRouter.route("/oauth/google/unlink").get(auth.handleUnlinkGoogle);
+authRouter.route("/google/unlink").get(auth.handleUnlinkGoogle);
 
 // facebook
 
-// authRouter.route("/oauth/facebook").get(auth.handleOAuthFacebook);
+// authRouter.route("/facebook").get(auth.handleOAuthFacebook);
 
 // authRouter
-//   .route("/oauth/facebook/redirect")
+//   .route("/facebook/redirect")
 //   .get(auth.handleOAuthFacebookRedirect);
 
-// authRouter.route("/oauth/facebook/unlink").get(auth.handleUnlinkFacebook);
+// authRouter.route("/facebook/unlink").get(auth.handleUnlinkFacebook);
 
 // get anti-csrf token route
 
