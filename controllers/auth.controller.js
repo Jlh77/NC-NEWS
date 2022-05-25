@@ -74,20 +74,24 @@ exports.handleOAuthGoogleRedirect = (req, res) => {
     );
 };
 
-exports.handleUnlinkGoogle = (req, res, next) => {
+exports.handleUnlinkGoogle = async (req, res, next) => {
   try {
     if (!req.isAuthenticated() || !req.user) {
       return res.redirect(
         isProduction
-        ? "https://nc-news77.netlify.app/login"
-        : "http://localhost:3000/login"
-        );
-      }
-      await authModel.removeGoogleCreds(req.user.user_id)
-      res.status(200).send({msg: "Your Google account is no longer connected this account."})
-    } catch (err) {
-      next(err)
+          ? "https://nc-news77.netlify.app/login"
+          : "http://localhost:3000/login"
+      );
     }
+    await authModel.removeGoogleCreds(req.user.user_id);
+    res
+      .status(200)
+      .send({
+        msg: "Your Google account is no longer connected this account.",
+      });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.getUserData = async (req, res, next) => {
