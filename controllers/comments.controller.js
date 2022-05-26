@@ -4,7 +4,7 @@ const isTest = process.env.NODE_ENV === "test";
 exports.removeCommentById = async (req, res, next) => {
   try {
     if (!isTest) {
-      if (!req.isAuthenticated()) {
+      if (!req.user) {
         throw {
           status: 401,
           msg: "You must be logged in to delete comments.",
@@ -23,7 +23,7 @@ exports.removeCommentById = async (req, res, next) => {
 exports.patchIncCommentVotesById = async (req, res, next) => {
   try {
     if (!isTest) {
-      if (!req.isAuthenticated()) {
+      if (!req.user) {
         throw {
           status: 401,
           msg: "You must be logged in to upvote comments.",

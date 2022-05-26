@@ -52,7 +52,7 @@ exports.getArticleById = async (req, res, next) => {
 exports.patchArticleById = async (req, res, next) => {
   try {
     if (!isTest) {
-      if (!req.isAuthenticated()) {
+      if (!req.user) {
         throw {
           status: 401,
           msg: "You must be logged in to edit this article.",
@@ -75,7 +75,7 @@ exports.patchArticleById = async (req, res, next) => {
 exports.removeArticleById = async (req, res, next) => {
   try {
     if (!isTest) {
-      if (!req.isAuthenticated()) {
+      if (!req.user) {
         throw {
           status: 401,
           msg: "You must be logged in to delete this article.",
@@ -109,7 +109,7 @@ exports.getArticleCommentsById = async (req, res, next) => {
 exports.postArticleCommentById = async (req, res, next) => {
   try {
     if (!isTest) {
-      if (!req.isAuthenticated()) {
+      if (!req.user) {
         throw {
           status: 401,
           msg: "You must be logged in to edit this article.",
