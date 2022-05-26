@@ -5,11 +5,8 @@ const app = require("../app.js");
 const request = require("supertest")(app);
 require("jest-sorted");
 
-// Would ideally add smth like .set("Cookie", ["myApp-token=12345667", "myApp-other=blah"]); to every post request, to allow testing for csrf attacks here,
-// but for this project to keep it simple I decided against and instead ignore setting csrf middleware in app.js if in testing mode with jest.
-
 afterAll(() => db.end());
-beforeEach(async () => await seed(testData));
+beforeEach(() => seed(testData));
 
 describe("general 404 error handling", () => {
   test("404 - successful error handling", async () => {
@@ -84,12 +81,6 @@ describe("Articles", () => {
 
   describe("POST /api/articles", () => {
     test("returns posted article object", async () => {
-      // register user/login before each
-      const regRes = await request.post("/api/auth/join").send({
-        username: "test",
-        email: "nc-news@hotmail.com",
-        password: "password",
-      });
       const { body } = await request
         .post("/api/articles")
         .send({
