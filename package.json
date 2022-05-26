@@ -25,7 +25,9 @@
   "devDependencies": {
     "husky": "^7.0.0",
     "jest": "^27.5.1",
-    "jest-extended": "^2.0.0"
+    "jest-extended": "^2.0.0",
+    "jest-sorted": "^1.0.14",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "connect-pg-simple": "^7.0.0",
@@ -36,15 +38,13 @@
     "express": "^4.17.3",
     "express-session": "^1.17.3",
     "helmet": "^5.1.0",
-    "jest-sorted": "^1.0.14",
     "nodemailer": "^6.7.5",
     "passport": "^0.5.3",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.7.3",
-    "pg-format": "^1.0.4",
-    "supertest": "^6.2.2"
+    "pg-format": "^1.0.4"
   },
   "jest": {
     "setupFilesAfterEnv": [

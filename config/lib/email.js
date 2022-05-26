@@ -13,7 +13,7 @@ module.exports.send = (config) => {
       rejectUnauthorized: false,
     },
   });
-  transport.sendMail(config, function (err, info) {
+  transport.sendMail(config, (err, info) => {
     if (err) {
       console.log("EMAIL_CONFIG_ERROR: ", err);
     }
