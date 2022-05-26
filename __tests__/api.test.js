@@ -9,7 +9,7 @@ require("jest-sorted");
 // but for this project to keep it simple I decided against and instead ignore setting csrf middleware in app.js if in testing mode with jest.
 
 afterAll(() => db.end());
-beforeEach(() => seed(testData));
+beforeEach(async () => await seed(testData));
 
 describe("general 404 error handling", () => {
   test("404 - successful error handling", async () => {
@@ -84,6 +84,12 @@ describe("Articles", () => {
 
   describe("POST /api/articles", () => {
     test("returns posted article object", async () => {
+      // register user/login before each
+      const regRes = await request.post("/api/auth/join").send({
+        username: "test",
+        email: "nc-news@hotmail.com",
+        password: "password",
+      });
       const { body } = await request
         .post("/api/articles")
         .send({

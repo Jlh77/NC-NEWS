@@ -2,6 +2,13 @@ const { commentsModel } = require("../models");
 
 exports.removeCommentById = async (req, res, next) => {
   try {
+    // if (!req.isAuthenticated()) {
+    //   throw {
+    //     status: 401,
+    //     msg: "You must be logged in to delete comments.",
+    //   };
+    // }
+
     const { comment_id } = req.params;
     await commentsModel.deleteCommentById(comment_id);
     res.status(204).send();
@@ -12,6 +19,13 @@ exports.removeCommentById = async (req, res, next) => {
 
 exports.patchIncCommentVotesById = async (req, res, next) => {
   try {
+    // if (!req.isAuthenticated()) {
+    //   throw {
+    //     status: 401,
+    //     msg: "You must be logged in to upvote comments.",
+    //   };
+    // }
+
     const { comment_id } = req.params;
     const { inc_votes } = req.body;
     const updatedComment = await commentsModel.updateIncCommentVotesById(

@@ -41,24 +41,6 @@ module.exports = (app) => {
     })
   );
 
-  // disable csurf during testing
-  if (process.env.NODE_ENV !== "test") {
-    const cookieParser = require("cookie-parser");
-    app.use(cookieParser());
-
-    const csurf = require("csurf");
-    app.use(
-      csurf({
-        cookie: {
-          httpOnly: true,
-          secure: isProduction,
-          //maxAge: 3600,
-        },
-      })
-    );
-    console.log(">csurf implemented<<<<<<");
-  }
-
   require("./config/passport");
 
   app.use(passport.initialize());

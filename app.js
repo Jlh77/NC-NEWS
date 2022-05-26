@@ -23,7 +23,6 @@ app.use((req, res) => {
 app.use(errorHandlers.customError);
 app.use(errorHandlers.psql);
 app.use(errorHandlers.usernameAlreadyTaken);
-// app.use(errorHandlers.badCSRFToken);
 app.use(errorHandlers.unknownGenericError);
 
 module.exports = app;

@@ -18,6 +18,13 @@ exports.getArticles = async (req, res, next) => {
 
 exports.postArticle = async (req, res, next) => {
   try {
+    // if (!req.isAuthenticated()) {
+    //   throw {
+    //     status: 401,
+    //     msg: "You must be logged in to post an article.",
+    //   };
+    // }
+
     const { newArticle } = req.body;
     if (!newArticle) {
       return res.status(400).send({ status: 400, msg: "Bad Request" });
@@ -41,6 +48,13 @@ exports.getArticleById = async (req, res, next) => {
 
 exports.patchArticleById = async (req, res, next) => {
   try {
+    // if (!req.isAuthenticated()) {
+    //   throw {
+    //     status: 401,
+    //     msg: "You must be logged in to edit this article.",
+    //   };
+    // }
+
     const { article_id } = req.params;
     const { inc_votes } = req.body;
     const updatedArticle = await articlesModel.updateArticleById(
@@ -55,6 +69,13 @@ exports.patchArticleById = async (req, res, next) => {
 
 exports.removeArticleById = async (req, res, next) => {
   try {
+    //   if (!req.isAuthenticated()) {
+    //     throw {
+    //       status: 401,
+    //       msg: "You must be logged in to delete this article.",
+    //     };
+    //   }
+
     const { article_id } = req.params;
     await articlesModel.deleteArticleById(article_id);
     res.status(204).send();
@@ -80,6 +101,13 @@ exports.getArticleCommentsById = async (req, res, next) => {
 
 exports.postArticleCommentById = async (req, res, next) => {
   try {
+    // if (!req.isAuthenticated()) {
+    //   throw {
+    //     status: 401,
+    //     msg: "You must be logged in to edit this article.",
+    //   };
+    // }
+
     const { article_id } = req.params;
     const { username, body } = req.body;
     const postedComment = await articlesModel.insertArticleCommentById(
