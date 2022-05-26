@@ -69,16 +69,11 @@ exports.resetPassword = async (email, password, token) => {
     "UPDATE users SET password = $1, salt = $2 WHERE email = $3;",
     [saltHash.hash, saltHash.salt, email]
   );
-
-  this.logoutAllDevices();
 };
 
-exports.logoutAllDevices = async (id) => {
-  let logoutAllQuery =
-    'DELETE FROM user_sessions WHERE JSON_EXTRACT(`data`, "$.passport.user") = $1;';
-  await db.query(logoutAllQuery, [id]);
-  return;
-};
+// exports.logoutAllDevices = async (id) => {
+//   deklete all sessions, not implemented but idea is here
+// };
 
 exports.removeGoogleCreds = async (id) => {
   await db.query(

@@ -70,11 +70,12 @@ exports.resetPassword = async (req, res, next) => {
       req.body.password,
       req.body.token
     );
-    res
-      .status(200)
-      .send({
-        msg: "Your password has been successfully changed. You must log back in.",
-      });
+    if (req.isAuthenticated()) {
+      req.logout();
+    }
+    res.status(200).send({
+      msg: "Your password has been successfully changed. You must log back in.",
+    });
   } catch (err) {
     next(err);
   }
