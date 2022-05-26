@@ -54,6 +54,10 @@ exports.logoutAllDevices = async (req, res, next) => {
 
 exports.forgotPassword = async (req, res, next) => {
   try {
+    await authModel.forgotPassword(req.user.user_id || req.body.email);
+    res.status(200).send({
+      msg: "Email sent. Please check your inbox for a reset password link.",
+    });
   } catch (err) {
     next(err);
   }
@@ -61,6 +65,16 @@ exports.forgotPassword = async (req, res, next) => {
 
 exports.resetPassword = async (req, res, next) => {
   try {
+    await authModel.resetPassword(
+      req.body.email,
+      req.body.password,
+      req.body.token
+    );
+    res
+      .status(200)
+      .send({
+        msg: "Your password has been successfully changed. You must log back in.",
+      });
   } catch (err) {
     next(err);
   }
@@ -84,11 +98,9 @@ exports.handleUnlinkGoogle = async (req, res, next) => {
       );
     }
     await authModel.removeGoogleCreds(req.user.user_id);
-    res
-      .status(200)
-      .send({
-        msg: "Your Google account is no longer connected this account.",
-      });
+    res.status(200).send({
+      msg: "Your Google account is no longer connected this account.",
+    });
   } catch (err) {
     next(err);
   }
@@ -107,5 +119,3 @@ exports.getUserData = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.logout;

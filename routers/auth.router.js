@@ -12,7 +12,7 @@ authRouter.route("/join").post(auth.join);
 
 authRouter.route("/logout").post(auth.logout);
 
-authRouter.route("/logout-all-devices").get(auth.logoutAllDevices);
+authRouter.route("/logout-all-devices").post(auth.logoutAllDevices);
 
 // reset password
 
@@ -20,7 +20,7 @@ authRouter.route("/forgot-password").post(auth.forgotPassword);
 
 authRouter.route("/reset-password").post(auth.resetPassword);
 
-// social (auth)
+// social auth
 
 // google
 
@@ -47,12 +47,6 @@ authRouter.route("/google/unlink").get(auth.handleUnlinkGoogle);
 //   .get(auth.handleOAuthFacebookRedirect);
 
 // authRouter.route("/facebook/unlink").get(auth.handleUnlinkFacebook);
-
-// get anti-csrf token route
-
-// authRouter.route("/getCSRFToken").get((req, res) => {
-//   res.json({ CSRFToken: req.CSRFToken() });
-// });
 
 // logged in user api
 
