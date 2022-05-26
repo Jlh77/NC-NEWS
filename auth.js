@@ -5,7 +5,7 @@ const db = require("./db/connection");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 
-module.exports = (app) => {
+module.exports = async (app) => {
   const isProduction = process.env.NODE_ENV === "production" ? true : false;
 
   app.use(helmet());
@@ -26,7 +26,7 @@ module.exports = (app) => {
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
-      store: new pgSession({
+      store: await new pgSession({
         conString: process.env.DATABASE_URL,
         pool: db,
         tableName: "user_sessions",

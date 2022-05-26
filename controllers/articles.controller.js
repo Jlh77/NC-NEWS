@@ -1,4 +1,5 @@
 const { articlesModel } = require("../models");
+const isTest = process.env.NODE_ENV === "test";
 
 exports.getArticles = async (req, res, next) => {
   const { topic, sort_by, order, limit, page } = req.query;
@@ -18,12 +19,14 @@ exports.getArticles = async (req, res, next) => {
 
 exports.postArticle = async (req, res, next) => {
   try {
-    // if (!req.isAuthenticated()) {
-    //   throw {
-    //     status: 401,
-    //     msg: "You must be logged in to post an article.",
-    //   };
-    // }
+    if (!isTest) {
+      if (!req.user) {
+        throw {
+          status: 401,
+          msg: "You must be logged in to post an article.",
+        };
+      }
+    }
 
     const { newArticle } = req.body;
     if (!newArticle) {
@@ -48,12 +51,14 @@ exports.getArticleById = async (req, res, next) => {
 
 exports.patchArticleById = async (req, res, next) => {
   try {
-    // if (!req.isAuthenticated()) {
-    //   throw {
-    //     status: 401,
-    //     msg: "You must be logged in to edit this article.",
-    //   };
-    // }
+    if (!isTest) {
+      if (!req.isAuthenticated()) {
+        throw {
+          status: 401,
+          msg: "You must be logged in to edit this article.",
+        };
+      }
+    }
 
     const { article_id } = req.params;
     const { inc_votes } = req.body;
@@ -69,12 +74,14 @@ exports.patchArticleById = async (req, res, next) => {
 
 exports.removeArticleById = async (req, res, next) => {
   try {
-    //   if (!req.isAuthenticated()) {
-    //     throw {
-    //       status: 401,
-    //       msg: "You must be logged in to delete this article.",
-    //     };
-    //   }
+    if (!isTest) {
+      if (!req.isAuthenticated()) {
+        throw {
+          status: 401,
+          msg: "You must be logged in to delete this article.",
+        };
+      }
+    }
 
     const { article_id } = req.params;
     await articlesModel.deleteArticleById(article_id);
@@ -101,12 +108,14 @@ exports.getArticleCommentsById = async (req, res, next) => {
 
 exports.postArticleCommentById = async (req, res, next) => {
   try {
-    // if (!req.isAuthenticated()) {
-    //   throw {
-    //     status: 401,
-    //     msg: "You must be logged in to edit this article.",
-    //   };
-    // }
+    if (!isTest) {
+      if (!req.isAuthenticated()) {
+        throw {
+          status: 401,
+          msg: "You must be logged in to edit this article.",
+        };
+      }
+    }
 
     const { article_id } = req.params;
     const { username, body } = req.body;
