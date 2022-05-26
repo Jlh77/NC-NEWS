@@ -77,6 +77,7 @@ exports.resetPassword = async (req, res, next) => {
       msg: "Your password has been successfully changed. You must log back in.",
     });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };

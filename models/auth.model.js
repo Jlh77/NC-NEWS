@@ -17,10 +17,13 @@ exports.forgotPassword = async (email) => {
     email,
   ]);
 
-  // Create a random reset token
+  // just removes old requests, in production might be a cron job
+  await db.query("DELETE FROM user_reset_tokens WHERE used = true;");
+
+  // create a random reset token
   let token = crypto.randomBytes(64).toString("base64");
 
-  // Set expiry date in 10 minutes
+  // set expiry date in 10 minutes
   let expireDate = new Date(new Date().getTime() + 600000);
 
   await db.query(
@@ -43,14 +46,21 @@ exports.forgotPassword = async (email) => {
   };
 
   mailer.send(message);
-
-  console.log("should send email...");
 };
 
 exports.resetPassword = async (id, password, token) => {
+  const res = await db.query("SELECT * FROM users WHERE user_id = $1;", [id]);
+
+  if (!res.rows.length) {
+    return Promise.reject({
+      status: 400,
+      msg: "Link expired or does not exist.",
+    });
+  }
+
   const { rows } = await db.query(
-    "SELECT * FROM user_reset_tokens WHERE user_id = $1 AND token = $2 AND expiration > CURRENT_TIMESTAMP AND used = $3;",
-    [id, token, false]
+    "SELECT * FROM user_reset_tokens WHERE email = $1 AND token = $2 AND expiration > CURRENT_TIMESTAMP AND used = $3;",
+    [res.rows[0].email, token, false]
   );
 
   if (!rows.length) {
@@ -60,8 +70,8 @@ exports.resetPassword = async (id, password, token) => {
     });
   }
 
-  // Set token to used, before continuing to reset the password.
-  await db.query("UPDATE user_reset_tokens SET used = 1 WHERE email = $1;", [
+  // set token to used, before continuing to reset the password.
+  await db.query("UPDATE user_reset_tokens SET used = true WHERE email = $1;", [
     rows[0].email,
   ]);
 
@@ -74,13 +84,14 @@ exports.resetPassword = async (id, password, token) => {
   );
 };
 
+// logout all devices model
 // exports.logoutAllDevices = async (id) => {
-//   delete all sessions, not implemented but idea is here
+//   delete all sessions related to a user, not implemented but idea is here
 // };
 
 exports.removeGoogleCreds = async (id) => {
   await db.query(
-    "UPDATE users SET google_id = $1, google_email = $2, google_display_name = $3 WHERE user_id = $4;",
-    [null, null, null, id]
+    "UPDATE users SET google_id = null, google_email = null, google_display_name = null WHERE user_id = $1;",
+    [id]
   );
 };
