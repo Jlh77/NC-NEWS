@@ -21,22 +21,18 @@ passport.use(
       // If user is logged in, proceed to simply link account
       if (req.user) {
         try {
-          req.user.google_id = profile.id;
-          req.user.google_email = profile.emails[0].value;
-          req.user.google_display_name = profile.displayName;
-
           await db.query(
             "UPDATE users SET google_id = $1, google_email = $2 WHERE user_id = $3;",
-            [req.user.google_id, req.user.google_email, req.user.id]
+            [profile.id, profile.emails[0].value, req.user.user_id]
           );
-
           // No error (google account not already in use) link and return updated user
+          console.log("HERE1");
           return done(null, req.user);
         } catch (err) {
+          console.log("HERE  2");
           // If google account is duplicate (linked to different account) will return error
-          return done(null, false, {
-            success: false,
-            msg: "The Google account you tried to link is already associated with another account.",
+          return done(null, req.user, {
+            msg: "Sorry, the Google account you tried to link is already associated with another account.",
           });
         }
       }

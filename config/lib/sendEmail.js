@@ -4,11 +4,9 @@ const nodemailer = require("nodemailer");
 
 module.exports.now = (config) => {
   const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_SERVER,
-    port: 587,
-    secure: false,
+    service: "hotmail",
     auth: {
-      user: process.env.EMAIL_USER,
+      user: process.env.EMAIL_ADDRESS,
       pass: process.env.EMAIL_PASS,
     },
     tls: {
