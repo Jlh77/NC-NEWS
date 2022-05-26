@@ -13,7 +13,7 @@ exports.forgotPassword = async (email) => {
     return;
   }
 
-  await db.query("UPDATE user_reset_tokens SET used = 1 WHERE email = $1;", [
+  await db.query("UPDATE user_reset_tokens SET used = true WHERE email = $1;", [
     email,
   ]);
 
@@ -25,29 +25,32 @@ exports.forgotPassword = async (email) => {
 
   await db.query(
     "INSERT INTO user_reset_tokens (email, expiration, token, used) VALUES ($1, $2, $3, $4);",
-    [email, expireDate, token, 0]
+    [email, expireDate, token, false]
   );
 
   const message = {
+    from: process.env.EMAIL_ADDRESS,
     to: email,
     subject: "Reset Your Password - NC News",
     text: `To reset your password, please click the link below.\n\n
       ${
         process.env.NODE_ENV === "production"
-          ? "https://nc-news77.netlify.app/reset-password"
-          : "http://localhost:3000/reset-password"
-      }reset-password?token=${encodeURIComponent(token)}
+          ? "https://nc-news77.netlify.app/"
+          : "http://localhost:3000/"
+      }reset-password?token=${encodeURIComponent(token)}&id=${rows[0].user_id}
 
       "\n\nThis link expires after 10 minutes.\n\nIf you did not request to change your password, you can safely ignore this email.`,
   };
 
   mailer.send(message);
+
+  console.log("should send email...");
 };
 
-exports.resetPassword = async (email, password, token) => {
+exports.resetPassword = async (id, password, token) => {
   const { rows } = await db.query(
-    "SELECT * FROM user_reset_tokens WHERE email = $1 AND token = $2 AND expiration > CURRENT_TIMESTAMP AND used = $3;",
-    [email, token, 0]
+    "SELECT * FROM user_reset_tokens WHERE user_id = $1 AND token = $2 AND expiration > CURRENT_TIMESTAMP AND used = $3;",
+    [id, token, false]
   );
 
   if (!rows.length) {
@@ -59,7 +62,7 @@ exports.resetPassword = async (email, password, token) => {
 
   // Set token to used, before continuing to reset the password.
   await db.query("UPDATE user_reset_tokens SET used = 1 WHERE email = $1;", [
-    email,
+    rows[0].email,
   ]);
 
   const saltHash = genHash(password);
@@ -67,12 +70,12 @@ exports.resetPassword = async (email, password, token) => {
 
   await db.query(
     "UPDATE users SET password = $1, salt = $2 WHERE email = $3;",
-    [saltHash.hash, saltHash.salt, email]
+    [saltHash.hash, saltHash.salt, rows[0].email]
   );
 };
 
 // exports.logoutAllDevices = async (id) => {
-//   deklete all sessions, not implemented but idea is here
+//   delete all sessions, not implemented but idea is here
 // };
 
 exports.removeGoogleCreds = async (id) => {

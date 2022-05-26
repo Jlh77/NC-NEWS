@@ -54,7 +54,7 @@ exports.logoutAllDevices = async (req, res, next) => {
 
 exports.forgotPassword = async (req, res, next) => {
   try {
-    await authModel.forgotPassword(req.user.user_id || req.body.email);
+    await authModel.forgotPassword(req.user?.email || req.body.email);
     res.status(200).send({
       msg: "Email sent. Please check your inbox for a reset password link.",
     });
@@ -66,7 +66,7 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try {
     await authModel.resetPassword(
-      req.body.email,
+      req.body.id,
       req.body.password,
       req.body.token
     );
