@@ -38,16 +38,6 @@ authRouter.route("/google/redirect").get(
 );
 authRouter.route("/google/unlink").get(auth.handleUnlinkGoogle);
 
-// facebook
-
-// authRouter.route("/facebook").get(auth.handleOAuthFacebook);
-
-// authRouter
-//   .route("/facebook/redirect")
-//   .get(auth.handleOAuthFacebookRedirect);
-
-// authRouter.route("/facebook/unlink").get(auth.handleUnlinkFacebook);
-
 // logged in user api
 
 authRouter.route("/current-user").get(auth.getUserData);
