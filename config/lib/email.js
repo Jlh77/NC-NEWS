@@ -15,9 +15,7 @@ module.exports.send = (config) => {
   });
   transport.sendMail(config, function (err, info) {
     if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
+      console.log("EMAIL_CONFIG_ERROR: ", err);
     }
   });
 };
