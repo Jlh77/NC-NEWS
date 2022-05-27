@@ -284,7 +284,7 @@ describe("Articles", () => {
         .expect(400);
       expect(body.msg).toBe("Bad Request");
     });
-    test("404 for no body", async () => {
+    test("400 for no body", async () => {
       const newComment = {
         username: "this user dont exist",
       };

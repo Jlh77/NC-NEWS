@@ -84,6 +84,7 @@ exports.selectArticleCommentsById = async (
 };
 
 exports.insertArticleCommentById = async (article_id, username, body) => {
+  if (!body?.length) return Promise.reject({ status: 400, msg: "Bad Request" });
   const query = `INSERT INTO comments (
       article_id,
       votes,
