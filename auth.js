@@ -26,7 +26,7 @@ module.exports = async (app) => {
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
-      store: await new pgSession({
+      store: new pgSession({
         conString: process.env.DATABASE_URL,
         pool: db,
         tableName: "user_sessions",
